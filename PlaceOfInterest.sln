@@ -27,6 +27,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PlaceOfInterest.Chatbot", "
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PlaceOfInterest.BackOffice", "PlaceOfInterest.BackOffice\PlaceOfInterest.BackOffice.csproj", "{4264E04E-DA46-4FE1-BA1D-9244083D6C0B}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MediatRCore", "MediatR\MediatRCore.csproj", "{60DFFD6A-0801-4312-9FE1-62E8E0613F4B}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -61,6 +63,10 @@ Global
 		{4264E04E-DA46-4FE1-BA1D-9244083D6C0B}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{4264E04E-DA46-4FE1-BA1D-9244083D6C0B}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{4264E04E-DA46-4FE1-BA1D-9244083D6C0B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{60DFFD6A-0801-4312-9FE1-62E8E0613F4B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{60DFFD6A-0801-4312-9FE1-62E8E0613F4B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{60DFFD6A-0801-4312-9FE1-62E8E0613F4B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{60DFFD6A-0801-4312-9FE1-62E8E0613F4B}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -73,6 +79,7 @@ Global
 		{0EB17D1A-8D1C-479B-93EA-E539CD1BC9BF} = {9293A59E-B2F0-44B2-B1DA-CB71BC215DA9}
 		{58C3527E-E0B9-43D0-B7AD-22F969DEE4D1} = {D6EDF613-3164-46CF-B761-1F21293B5790}
 		{4264E04E-DA46-4FE1-BA1D-9244083D6C0B} = {02EA681E-C7D8-13C7-8484-4AC65E1B71E8}
+		{60DFFD6A-0801-4312-9FE1-62E8E0613F4B} = {D6EDF613-3164-46CF-B761-1F21293B5790}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {2AEAD861-CA64-4284-A29C-3478D9F181BF}

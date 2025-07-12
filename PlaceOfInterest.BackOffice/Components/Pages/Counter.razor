@@ -1,4 +1,6 @@
 ﻿@page "/counter"
+@using MediatR
+@using PlaceOfInterest.Application.UseCases.CreateStartLocation
 @rendermode InteractiveServer
 
 <PageTitle>Counter</PageTitle>
@@ -10,10 +12,12 @@
 <button class="btn btn-primary" @onclick="IncrementCount">Click me</button>
 
 @code {
+    [Inject] public IMediator Mediator { get; set; } = default!;
     private int currentCount = 0;
 
-    private void IncrementCount()
+    private async Task IncrementCount()
     {
         currentCount++;
+        var result = await Mediator.Send(new CreateStartLocationRequest(){Location = "hej"});
     }
 }
