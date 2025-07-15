@@ -9,7 +9,7 @@ public static class DeleteStartLocationExtension
     {
         request.Count = repository.GetQuery()
             .Where(x => x.Id == request.Id)
-            .Select(x => x.PlaceOfInterests.Count)
+            .Select(x => x.PlaceOfInterests.Select(poi => poi).Count())
             .First();
     }
 }
