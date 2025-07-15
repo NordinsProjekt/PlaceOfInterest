@@ -2,14 +2,14 @@
 using MediatR;
 using Microsoft.Extensions.DependencyInjection;
 using NSubstitute;
-using PlaceOfInterest.BackOffice.Components.Pages.StartLocation.Components;
+using PlaceOfInterest.BackOffice.Components.Pages.EndLocation.Components;
 using Radzen;
 
 namespace PlaceOfInterest.BackOffice.Tests.Components.Pages.StartLocation.Components;
 
-public class UpdateStartLocationFormTests : TestContext
+public class UpdateEndLocationFormTests : TestContext
 {
-    public UpdateStartLocationFormTests()
+    public UpdateEndLocationFormTests()
     {
         var mediatorMock = Substitute.For<IMediator>();
 
@@ -20,7 +20,7 @@ public class UpdateStartLocationFormTests : TestContext
     [Fact]
     public void UpdateStartLocationForm_ValidForm_ErrorsShouldBeZero()
     {
-        var component = RenderComponent<UpdateStartLocationForm>();
+        var component = RenderComponent<UpdateEndLocationForm>();
 
         component.Find("#location").Change("Valid Location");
         component.Find("form").Submit();
@@ -34,7 +34,7 @@ public class UpdateStartLocationFormTests : TestContext
     [Fact]
     public void UpdateStartLocationForm_NotValidForm_ErrorsShouldBeMoreThanZero()
     {
-        var component = RenderComponent<UpdateStartLocationForm>();
+        var component = RenderComponent<UpdateEndLocationForm>();
 
         component.Find("form").Submit();
         component.GetChangesSinceFirstRender();

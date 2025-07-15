@@ -9,13 +9,11 @@ namespace PlaceOfInterest.BackOffice.Tests.Components.Pages.StartLocation.Compon
 
 public class CreateStartLocationFormTests : TestContext
 {
-    private readonly IMediator _mediatorMock;
-
     public CreateStartLocationFormTests()
     {
-        _mediatorMock = Substitute.For<IMediator>();
+        var mediatorMock = Substitute.For<IMediator>();
 
-        Services.AddSingleton(_mediatorMock);
+        Services.AddSingleton(mediatorMock);
         Services.AddScoped<DialogService>();
     }
 
@@ -24,8 +22,6 @@ public class CreateStartLocationFormTests : TestContext
     {
         var component = RenderComponent<CreateStartLocationForm>();
 
-        component.Find("#name").Change("Valid Name");
-        component.Find("#description").Change("Valid Description");
         component.Find("#location").Change("Valid Location");
         component.Find("form").Submit();
 
