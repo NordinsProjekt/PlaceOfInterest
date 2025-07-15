@@ -1,22 +1,22 @@
 ﻿@rendermode InteractiveServer
 
-<h3>Start Location CRUD</h3>
+<h3>End Location CRUD</h3>
 
-<RadzenButton Click="CreateStartLocation" Text="Skapa"/>
+<RadzenButton Click="CreateEndLocation" Text="Skapa" />
 @if (DataList.Any())
 {
-    <RadzenDataGrid TItem="StartLocationListItemDto" Data="DataList" AllowSorting="true">
+    <RadzenDataGrid TItem="EndLocationListItemDto" Data="DataList" AllowSorting="true">
         <Columns>
-            <RadzenDataGridColumn Property="Name" Title="Namn"/>
-            <RadzenDataGridColumn Property="Description" Title="Beskrivning" MaxWidth="100"/>
-            <RadzenDataGridColumn Property="City" Title="Stad"/>
-            <RadzenDataGridColumn Property="Country" Title="Land"/>
-            <RadzenDataGridColumn Property="Created" Title="Skapad"/>
-            <RadzenDataGridColumn Property="Verified" Title="Verifierad"/>
+            <RadzenDataGridColumn Property="Name" Title="Namn" />
+            <RadzenDataGridColumn Property="Description" Title="Beskrivning" MaxWidth="100" />
+            <RadzenDataGridColumn Property="City" Title="Stad" />
+            <RadzenDataGridColumn Property="Country" Title="Land" />
+            <RadzenDataGridColumn Property="Created" Title="Skapad" />
+            <RadzenDataGridColumn Property="Verified" Title="Verifierad" />
             <RadzenDataGridColumn Title="Action">
                 <Template>
                     <RadzenIcon Icon="delete" @onclick="() => DeleteStartLocation(context.Id)" />
-                    <RadzenIcon Icon="update" @onclick="() => UpdateStartLocation(context.Id)"/>
+                    <RadzenIcon Icon="update" @onclick="() => UpdateStartLocation(context.Id)" />
                 </Template>
             </RadzenDataGridColumn>
         </Columns>
@@ -24,16 +24,16 @@
 }
 else
 {
-    <p>Didn´t found any start locations</p>
+    <p>Didnt found any End locations</p>
 }
 
 @code {
-    [Inject] public IRepository<StartLocation> Repo { get; set; }
+    [Inject] public IRepository<EndLocation> Repo { get; set; }
     [Inject] public IMediator Mediator { get; set; }
     [Inject] public DialogService DialogService { get; set; }
     [Inject] public NotificationService NotificationService { get; set; }
 
-    private List<StartLocationListItemDto> DataList { get; set; } = [];
+    private List<EndLocationListItemDto> DataList { get; set; } = [];
 
 
     protected override Task OnInitializedAsync()
@@ -44,13 +44,13 @@ else
 
     private void GetLocations()
     {
-        var selectedLocations = Repo.GetAll<StartLocation, string>(0, 20, x => x.Name);
+        var selectedLocations = Repo.GetAll<EndLocation, string>(0, 20, x => x.Name);
         DataList = selectedLocations.Select(x => x.ToListItemDto()).ToList();
     }
 
-    private async Task CreateStartLocation()
+    private async Task CreateEndLocation()
     {
-        await DialogService.OpenSideAsync<CreateStartLocationForm>("");
+        await DialogService.OpenSideAsync<CreateEndLocationForm>("");
         GetLocations();
     }
 
@@ -61,7 +61,7 @@ else
         {
             try
             {
-                await Mediator.Send(new DeleteStartLocationRequest { Id = id });
+                await Mediator.Send(new DeleteEndLocationRequest { Id = id });
                 NotificationService.Notify(NotificationSeverity.Info, "Location is deleted", "", 5000);
             }
             catch (Exception e)
@@ -75,7 +75,7 @@ else
 
     private async Task UpdateStartLocation(Guid id)
     {
-        await DialogService.OpenSideAsync<UpdateStartLocationForm>("", new Dictionary<string, object> { { "Id", id } });
+        await DialogService.OpenSideAsync<UpdateEndLocationForm>("", new Dictionary<string, object> { { "Id", id } });
         GetLocations();
     }
 }
