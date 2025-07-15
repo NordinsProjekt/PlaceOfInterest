@@ -2,7 +2,9 @@
 using MediatR;
 using Microsoft.Extensions.DependencyInjection;
 using NSubstitute;
+using PlaceOfInterest.Application.Interfaces;
 using PlaceOfInterest.BackOffice.Components.Pages.EndLocation.Components;
+using PlaceOfInterest.Domain;
 using Radzen;
 
 namespace PlaceOfInterest.BackOffice.Tests.Components.Pages.StartLocation.Components;
@@ -12,8 +14,11 @@ public class UpdateEndLocationFormTests : TestContext
     public UpdateEndLocationFormTests()
     {
         var mediatorMock = Substitute.For<IMediator>();
+        var repositoryMock = Substitute.For<IRepository<EndLocation>>();
+        repositoryMock.GetByIdAsync(Guid.Empty).ReturnsForAnyArgs(new EndLocation { Id = Guid.NewGuid() });
 
         Services.AddSingleton(mediatorMock);
+        Services.AddSingleton(repositoryMock);
         Services.AddScoped<DialogService>();
     }
 
@@ -40,6 +45,6 @@ public class UpdateEndLocationFormTests : TestContext
         component.GetChangesSinceFirstRender();
 
         var errors = component.FindAll(".validation-message");
-        Assert.True(errors.Count > 0);
+        Assert.True(errors.Count == 1);
     }
 }
