@@ -1,8 +1,4 @@
-﻿@using PlaceOfInterest.Application.Interfaces
-@using PlaceOfInterest.Application.UseCases.UpdateStartLocation
-@using PlaceOfInterest.Domain
-
-<h3>Update Start Location</h3>
+﻿<h3>Update Start Location</h3>
 
 <EditForm EditContext="EditContext" OnValidSubmit="HandleValidSubmit">
     <FluentValidationValidator />
@@ -30,7 +26,7 @@
     
     <div class="form-group">
         <label for="location">Verified</label>
-        <InputCheckbox id="verified" class="form-control" @bind-Value="UpdateStartLocationRequest.Verified" />
+        <RadzenCheckBox TValue="bool" id="verified" class="form-control" @bind-Value="UpdateStartLocationRequest.Verified" />
     </div>
 
     <button type="submit" class="btn btn-primary">Submit</button>

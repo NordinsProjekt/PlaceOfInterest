@@ -13,7 +13,7 @@ public class CreateEndLocationHandler(IRepository<EndLocation> repository, Creat
         var validatorResult = await validator.ValidateAsync(request, cancellationToken);
 
         if (!validatorResult.IsValid)
-            throw new ValidationException(nameof(ToString), validatorResult.Errors);
+            throw new ValidationException(GetType().Name, validatorResult.Errors);
 
         var endLocationEntity = request.ToDbEntity();
 
