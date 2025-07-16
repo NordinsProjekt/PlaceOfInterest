@@ -27,4 +27,8 @@
     <ProjectReference Include="..\PlaceOfInterest.EFCore\PlaceOfInterest.EFCore.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Components\Pages\PlaceOfInterest\" />
+  </ItemGroup>
+
 </Project>

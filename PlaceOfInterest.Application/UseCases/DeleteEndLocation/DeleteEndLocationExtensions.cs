@@ -3,7 +3,7 @@ using PlaceOfInterest.Domain;
 
 namespace PlaceOfInterest.Application.UseCases.DeleteEndLocation;
 
-public static class DeleteEndLocationExtension
+public static class DeleteEndLocationExtensions
 {
     public static void PreProcess(this DeleteEndLocationRequest request, IRepository<EndLocation> repository)
     {

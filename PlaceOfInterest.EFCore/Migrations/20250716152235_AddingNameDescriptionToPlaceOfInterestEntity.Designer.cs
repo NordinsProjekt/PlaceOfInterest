@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using PlaceOfInterest.EFCore;
 
@@ -11,9 +12,11 @@ using PlaceOfInterest.EFCore;
 namespace PlaceOfInterest.EFCore.Migrations
 {
     [DbContext(typeof(PlaceOfInterestContext))]
-    partial class PlaceOfInterestContextModelSnapshot : ModelSnapshot
+    [Migration("20250716152235_AddingNameDescriptionToPlaceOfInterestEntity")]
+    partial class AddingNameDescriptionToPlaceOfInterestEntity
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder

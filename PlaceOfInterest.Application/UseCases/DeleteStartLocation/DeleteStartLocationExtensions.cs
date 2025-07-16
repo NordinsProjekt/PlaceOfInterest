@@ -3,7 +3,7 @@ using PlaceOfInterest.Domain;
 
 namespace PlaceOfInterest.Application.UseCases.DeleteStartLocation;
 
-public static class DeleteStartLocationExtension
+public static class DeleteStartLocationExtensions
 {
     public static void PreProcess(this DeleteStartLocationRequest request, IRepository<StartLocation> repository)
     {

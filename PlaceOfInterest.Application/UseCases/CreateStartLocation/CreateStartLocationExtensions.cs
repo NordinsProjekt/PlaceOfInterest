@@ -2,7 +2,7 @@
 
 namespace PlaceOfInterest.Application.UseCases.CreateStartLocation;
 
-public static class CreateStartLocationExtension
+public static class CreateStartLocationExtensions
 {
     public static StartLocation ToDbEntity(this CreateStartLocationRequest request)
     {

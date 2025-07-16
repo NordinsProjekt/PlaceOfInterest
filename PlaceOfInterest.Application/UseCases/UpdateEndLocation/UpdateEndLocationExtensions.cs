@@ -2,7 +2,7 @@
 
 namespace PlaceOfInterest.Application.UseCases.UpdateEndLocation;
 
-public static class UpdateEndLocationExtension
+public static class UpdateEndLocationExtensions
 {
     public static UpdateEndLocationRequest ToUpdateRequest(this EndLocation entity)
     {

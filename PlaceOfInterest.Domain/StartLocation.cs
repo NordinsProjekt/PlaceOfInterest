@@ -1,6 +1,8 @@
-﻿namespace PlaceOfInterest.Domain;
+﻿using PlaceOfInterest.Domain.Interface;
 
-public class StartLocation
+namespace PlaceOfInterest.Domain;
+
+public class StartLocation : IEntity
 {
     public Guid Id { get; set; }
     public DateTime Created { get; set; }

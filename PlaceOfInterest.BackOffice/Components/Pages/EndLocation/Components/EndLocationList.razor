@@ -64,7 +64,7 @@ else
                 await Mediator.Send(new DeleteEndLocationRequest { Id = id });
                 NotificationService.Notify(NotificationSeverity.Info, "Location is deleted", "", 5000);
             }
-            catch (Exception e)
+            catch (Exception)
             {
                 NotificationService.Notify(NotificationSeverity.Info, "Location is being used", "", 5000);
             }

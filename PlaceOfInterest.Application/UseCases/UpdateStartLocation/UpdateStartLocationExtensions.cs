@@ -2,7 +2,7 @@
 
 namespace PlaceOfInterest.Application.UseCases.UpdateStartLocation;
 
-public static class UpdateStartLocationExtension
+public static class UpdateStartLocationExtensions
 {
     public static UpdateStartLocationRequest ToUpdateRequest(this StartLocation entity)
     {

@@ -2,7 +2,7 @@
 
 namespace PlaceOfInterest.Application.UseCases.CreateEndLocation;
 
-public static class CreateEndLocationExtension
+public static class CreateEndLocationExtensions
 {
     public static EndLocation ToDbEntity(this CreateEndLocationRequest request)
     {
