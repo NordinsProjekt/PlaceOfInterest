@@ -14,7 +14,7 @@ public class PlaceOfInterest : IEntity
     public byte[] ImageBytes { get; set; } = [];
     public string ImageType { get; set; } = "";
     public string ImageUrl { get; set; } = "";
-    public byte TerrainScore { get; set; }
+    public byte TerrainScore { get; set; } //1-5
     public byte Score { get; set; } //1-5 stars
     public bool Verified { get; set; }
 }

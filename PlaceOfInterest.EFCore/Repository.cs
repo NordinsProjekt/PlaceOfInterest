@@ -21,15 +21,20 @@ public class Repository<T>(PlaceOfInterestContext context) : IRepository<T>
         params Expression<Func<T, object>>[] includes)
     {
         IQueryable<T> query = context.Set<T>();
+
         foreach (var include in includes) query = query.Include(include);
 
-        return query
+        return query.AsEnumerable()
             .OrderBy(orderByKey)
             .Skip(skip)
             .Take(take)
             .ToList();
     }
 
+    public int CountMatches(Expression<Func<T, bool>> predicate)
+    {
+        return context.Set<T>().Count(predicate);
+    }
 
     public async Task AddAsync(T entity)
     {

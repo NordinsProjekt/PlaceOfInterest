@@ -16,7 +16,7 @@ public class CreatePlaceOfInterestHandler(
         if (!validatorResult.IsValid)
             throw new ValidationException(GetType().Name, validatorResult.Errors);
 
-        request.PreProcess();
+        request.PreProcess(repository);
 
         var placeOfInterest = request.ToDbEntity();
 

@@ -2,7 +2,7 @@
 using MediatR;
 using Microsoft.Extensions.DependencyInjection;
 using NSubstitute;
-using PlaceOfInterest.BackOffice.Components.Pages.StartLocation.Components;
+using PlaceOfInterest.BackOffice.Components.Pages.StartLocationPage.Components;
 using Radzen;
 
 namespace PlaceOfInterest.BackOffice.Tests.Components.Pages.StartLocation.Components;

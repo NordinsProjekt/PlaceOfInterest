@@ -3,7 +3,7 @@ using MediatR;
 using Microsoft.Extensions.DependencyInjection;
 using NSubstitute;
 using PlaceOfInterest.Application.Interfaces;
-using PlaceOfInterest.BackOffice.Components.Pages.EndLocation.Components;
+using PlaceOfInterest.BackOffice.Components.Pages.EndLocationPage.Components;
 using PlaceOfInterest.Domain;
 using Radzen;
 
