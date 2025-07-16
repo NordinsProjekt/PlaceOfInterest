@@ -1,0 +1,91 @@
+﻿@using PlaceOfInterest.BackOffice.Components.Pages.PlaceOfInterestPage.Models
+@using global::PlaceOfInterest.Application.Interfaces
+@using global::PlaceOfInterest.Domain
+@using PlaceOfInterest.BackOffice.Components.Pages.PlaceOfInterestPage.Models.Extensions
+
+@rendermode InteractiveServer
+
+<h3>Place of Interest CRUD</h3>
+
+<RadzenButton Click="CreatePlaceOfInterest" Text="Skapa" />
+@if (DataList.Any())
+{
+    <RadzenDataGrid TItem="PlaceOfInterestListItemDto" Data="DataList" AllowSorting="true">
+        <Columns>
+            <RadzenDataGridColumn Property="Name" Title="Namn" />
+            <RadzenDataGridColumn Property="Description" Title="Beskrivning" MaxWidth="100" />
+            <RadzenDataGridColumn Title="Parkering/Start">
+                <Template>
+                </Template>
+            </RadzenDataGridColumn>
+            <RadzenDataGridColumn Title="Slutdestinationen">
+            </RadzenDataGridColumn>
+            <RadzenDataGridColumn Property="TerrainScore" Title="Skapad" />
+            <RadzenDataGridColumn Property="Score" Title="Poäng" />
+            <RadzenDataGridColumn Property="Verified" Title=""/>
+@*             <RadzenDataGridColumn Title="Action">
+                <Template>
+                    <RadzenIcon Icon="delete" @onclick="() => DeletePlaceOfInterest(context.Id)" />
+                    <RadzenIcon Icon="update" @onclick="() => UpdatePlaceOfInterest(context.Id)" />
+                </Template>
+            </RadzenDataGridColumn> *@
+        </Columns>
+    </RadzenDataGrid>
+}
+else
+{
+    <p>Didn´t found any place of interests</p>
+}
+
+@code {
+    [Inject] public IRepository<PlaceOfInterest> Repo { get; set; }
+    [Inject] public IMediator Mediator { get; set; }
+    [Inject] public DialogService DialogService { get; set; }
+    [Inject] public NotificationService NotificationService { get; set; }
+
+    private List<PlaceOfInterestListItemDto> DataList { get; set; } = [];
+
+
+    protected override Task OnInitializedAsync()
+    {
+        GetLocations();
+        return Task.CompletedTask;
+    }
+
+    private void GetLocations()
+    {
+        var selectedLocations = Repo.GetAll<PlaceOfInterest, string>(0, 20, x => x.Name);
+        DataList = selectedLocations.Select(x => x.ToListItemDto()).ToList();
+    }
+
+    private async Task CreatePlaceOfInterest()
+    {
+        await DialogService.OpenSideAsync<CreatePlaceOfInterestForm>("");
+        GetLocations();
+    }
+
+    // private async Task DeletePlaceOfInterest(Guid id)
+    // {
+    //     var delete = await DialogService.Alert("Delete the place?");
+    //     if (delete is true)
+    //     {
+    //         try
+    //         {
+    //             await Mediator.Send(new DeletePlaceOfInterestRequest { Id = id });
+    //             NotificationService.Notify(NotificationSeverity.Info, "Place is deleted", "", 5000);
+    //         }
+    //         catch (Exception)
+    //         {
+    //             NotificationService.Notify(NotificationSeverity.Info, "Place is being used", "", 5000);
+    //         }
+
+    //         GetLocations();
+    //     }
+    // }
+
+    // private async Task UpdatePlaceOfInterest(Guid id)
+    // {
+    //     await DialogService.OpenSideAsync<UpdatePlaceOfInterestForm>("", new Dictionary<string, object> { { "Id", id } });
+    //     GetLocations();
+    // }
+}
