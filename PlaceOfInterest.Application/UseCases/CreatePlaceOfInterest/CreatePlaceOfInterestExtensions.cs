@@ -1,4 +1,5 @@
 ﻿using PlaceOfInterest.Application.Interfaces;
+using PlaceOfInterest.Domain;
 
 namespace PlaceOfInterest.Application.UseCases.CreatePlaceOfInterest;
 
@@ -15,8 +16,10 @@ public static class CreatePlaceOfInterestExtensions
             ImageType = request.ImageType,
             ImageUrl = request.ImageUrl,
             TerrainScore = request.TerrainScore,
-            StartLocation = request.StartLocation,
-            EndLocation = request.EndLocation
+            StartLocation = new StartLocation(),
+            EndLocation = new EndLocation()
+            //StartLocation = request.StartLocation,
+            //EndLocation = request.EndLocation
         };
     }
 

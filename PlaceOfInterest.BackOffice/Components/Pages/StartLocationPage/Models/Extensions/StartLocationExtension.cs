@@ -1,4 +1,6 @@
-﻿namespace PlaceOfInterest.BackOffice.Components.Pages.StartLocation.Models.Extensions;
+﻿using PlaceOfInterest.BackOffice.Components.Pages.StartLocationPage.Models;
+
+namespace PlaceOfInterest.BackOffice.Components.Pages.StartLocationPage.Models.Extensions;
 
 public static class StartLocationExtension
 {

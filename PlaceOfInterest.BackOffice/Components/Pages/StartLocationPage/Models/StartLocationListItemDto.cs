@@ -1,4 +1,4 @@
-﻿namespace PlaceOfInterest.BackOffice.Components.Pages.StartLocation.Models;
+﻿namespace PlaceOfInterest.BackOffice.Components.Pages.StartLocationPage.Models;
 
 public class StartLocationListItemDto
 {

@@ -1,4 +1,4 @@
-﻿namespace PlaceOfInterest.BackOffice.Components.Pages.EndLocation.Models.Extensions;
+﻿namespace PlaceOfInterest.BackOffice.Components.Pages.EndLocationPage.Models.Extensions;
 
 public static class EndLocationExtension
 {

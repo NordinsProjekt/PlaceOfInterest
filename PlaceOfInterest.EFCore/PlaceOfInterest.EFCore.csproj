@@ -26,4 +26,8 @@
     <ProjectReference Include="..\PlaceOfInterest.Domain\PlaceOfInterest.Domain.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Models\" />
+  </ItemGroup>
+
 </Project>

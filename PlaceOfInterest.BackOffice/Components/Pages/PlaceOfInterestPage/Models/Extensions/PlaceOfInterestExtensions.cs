@@ -1,4 +1,4 @@
-﻿namespace PlaceOfInterest.BackOffice.Components.Pages.PlaceOfInterest.Models.Extensions;
+﻿namespace PlaceOfInterest.BackOffice.Components.Pages.PlaceOfInterestPage.Models.Extensions;
 
 public static class PlaceOfInterestExtensions
 {

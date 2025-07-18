@@ -2,7 +2,7 @@
 
 namespace PlaceOfInterest.Domain;
 
-public class EndLocation : IEntity
+public class EndLocation : IEntity, INameId
 {
     public Guid Id { get; set; }
     public DateTime Created { get; set; }

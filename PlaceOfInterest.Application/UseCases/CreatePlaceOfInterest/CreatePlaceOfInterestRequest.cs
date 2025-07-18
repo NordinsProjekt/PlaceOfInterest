@@ -1,5 +1,4 @@
 ﻿using MediatR;
-using PlaceOfInterest.Domain;
 
 namespace PlaceOfInterest.Application.UseCases.CreatePlaceOfInterest;
 
@@ -12,6 +11,8 @@ public class CreatePlaceOfInterestRequest : IRequest<bool>
     public string ImageType { get; set; } = "";
     public string ImageUrl { get; set; } = "";
     public byte TerrainScore { get; set; }
-    public StartLocation StartLocation { get; set; } = new();
-    public EndLocation EndLocation { get; set; } = new();
+    public Guid StartLocationId { get; set; }
+    public string StartLocation { get; set; } = "";
+    public Guid EndLocationId { get; set; }
+    public string EndLocation { get; set; } = "";
 }

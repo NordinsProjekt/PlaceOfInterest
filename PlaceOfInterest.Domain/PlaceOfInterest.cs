@@ -2,7 +2,7 @@
 
 namespace PlaceOfInterest.Domain;
 
-public class PlaceOfInterest : IEntity
+public class PlaceOfInterest : IEntity, INameId
 {
     public Guid Id { get; set; }
     public string Name { get; set; } = "";

@@ -1,4 +1,4 @@
-﻿namespace PlaceOfInterest.BackOffice.Components.Pages.EndLocation.Models;
+﻿namespace PlaceOfInterest.BackOffice.Components.Pages.EndLocationPage.Models;
 
 public class EndLocationListItemDto
 {

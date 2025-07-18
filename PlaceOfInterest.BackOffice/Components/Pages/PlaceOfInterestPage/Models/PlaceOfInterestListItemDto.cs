@@ -1,4 +1,4 @@
-﻿namespace PlaceOfInterest.BackOffice.Components.Pages.PlaceOfInterest.Models;
+﻿namespace PlaceOfInterest.BackOffice.Components.Pages.PlaceOfInterestPage.Models;
 
 public class PlaceOfInterestListItemDto
 {
