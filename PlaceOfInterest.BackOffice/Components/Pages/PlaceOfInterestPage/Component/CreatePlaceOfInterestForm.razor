@@ -1,38 +1,33 @@
 ﻿@using global::PlaceOfInterest.Application.UseCases.CreatePlaceOfInterest
 @using PlaceOfInterest.BackOffice.Components.Pages.StartLocationPage.Components
 @using PlaceOfInterest.BackOffice.Components.Pages.EndLocationPage.Components
+@using PlaceOfInterest.BackOffice.Components.Shared
 
 <h3>Create Point of interest</h3>
 
 <EditForm EditContext="EditContext" OnValidSubmit="HandleValidSubmit">
     <FluentValidationValidator/>
     <ValidationSummary/>
-    <div class="form-group">
-        <label for="name">Name</label>
+    <FormRow Title="Name">
         <InputText id="name" class="form-control" @bind-Value="CreatePlaceOfInterestRequest.Name"/>
-    </div>
-    <div class="form-group">
-        <label for="description">Description</label>
+    </FormRow>
+    <FormRow Title="Description">
         <InputTextArea id="description" class="form-control" @bind-Value="CreatePlaceOfInterestRequest.Description"/>
-    </div>
-    <div class="form-group">
-        <label for="startlocation">Start location</label>
+    </FormRow>
 
+    <FormRow Title="Start location">
         <StartLocationDropDown @bind-Value="CreatePlaceOfInterestRequest.StartLocationId"/>
         <RadzenTextBox @bind-Value="CreatePlaceOfInterestRequest.StartLocation"/>
-    </div>
-    <div class="form-group">
-        <label for="endlocation">End location</label>
+    </FormRow>
 
+    <FormRow Title="End location">
         <EndLocationDropDown @bind-Value="CreatePlaceOfInterestRequest.EndLocationId"/>
         <RadzenTextBox @bind-Value="CreatePlaceOfInterestRequest.EndLocation"/>
-    </div>
-
-    <div class="form-group">
-        <label for="endlocation">Uoload image</label>
-        <RadzenUpload Multiple="false" Accept="image/*" 
-                      @bind-Value="CreatePlaceOfInterestRequest.ImageBytes"/>
-    </div>
+    </FormRow>
+    <FormRow Title="Upload image">
+        <RadzenUpload Multiple="false" Accept="image/*"
+                      @bind-Value="CreatePlaceOfInterestRequest.ImageBytes" style="width: 100%"/>
+    </FormRow>
 
     <button type="submit" class="btn btn-primary">Submit</button>
 </EditForm>

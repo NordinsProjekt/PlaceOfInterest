@@ -1,29 +1,31 @@
 ﻿@using global::PlaceOfInterest.Application.UseCases.CreateStartLocation
+@using PlaceOfInterest.BackOffice.Components.Shared
 <h3>Create Start Location</h3>
 
 <EditForm EditContext="EditContext" OnValidSubmit="HandleValidSubmit">
     <FluentValidationValidator/>
     <ValidationSummary/>
-    <div class="form-group">
-        <label for="name">Name</label>
+
+    <FormRow Title="Name">
         <InputText id="name" class="form-control" @bind-Value="CreateStartLocationModel.Name"/>
-    </div>
-    <div class="form-group">
-        <label for="description">Description</label>
+    </FormRow>
+
+    <FormRow Title="Description">
         <InputTextArea id="description" class="form-control" @bind-Value="CreateStartLocationModel.Description"/>
-    </div>
-    <div class="form-group">
-        <label for="city">City</label>
+    </FormRow>
+
+    <FormRow Title="City">
         <InputText id="city" class="form-control" @bind-Value="CreateStartLocationModel.City"/>
-    </div>
-    <div class="form-group">
-        <label for="country">Country</label>
+    </FormRow>
+
+    <FormRow Title="Country">
         <InputText id="country" class="form-control" @bind-Value="CreateStartLocationModel.Country"/>
-    </div>
-    <div class="form-group">
-        <label for="location">Location</label>
+    </FormRow>
+
+    <FormRow Title="Location">
         <InputText id="location" class="form-control" @bind-Value="CreateStartLocationModel.Location"/>
-    </div>
+    </FormRow>
+
     <button type="submit" class="btn btn-primary">Submit</button>
 </EditForm>
 
@@ -45,4 +47,5 @@
         await Mediator.Send(CreateStartLocationModel);
         await DialogService.CloseSideAsync();
     }
+
 }
