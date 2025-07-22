@@ -2,30 +2,25 @@
 using MediatR;
 using Microsoft.Extensions.DependencyInjection;
 using NSubstitute;
-using PlaceOfInterest.Application.Interfaces;
 using PlaceOfInterest.BackOffice.Components.Pages.EndLocationPage.Components;
-using PlaceOfInterest.Domain;
 using Radzen;
 
-namespace PlaceOfInterest.BackOffice.Tests.Components.Pages.StartLocation.Components;
+namespace PlaceOfInterest.BackOffice.Tests.Components.Pages.EndLocation.Components;
 
-public class UpdateEndLocationFormTests : TestContext
+public class CreateEndLocationFormTests : TestContext
 {
-    public UpdateEndLocationFormTests()
+    public CreateEndLocationFormTests()
     {
         var mediatorMock = Substitute.For<IMediator>();
-        var repositoryMock = Substitute.For<IRepository<EndLocation>>();
-        repositoryMock.GetByIdAsync(Guid.Empty).ReturnsForAnyArgs(new EndLocation { Id = Guid.NewGuid() });
 
         Services.AddSingleton(mediatorMock);
-        Services.AddSingleton(repositoryMock);
         Services.AddScoped<DialogService>();
     }
 
     [Fact]
-    public void UpdateStartLocationForm_ValidForm_ErrorsShouldBeZero()
+    public void CreateEndLocationForm_ValidForm_ErrorsShouldBeZero()
     {
-        var component = RenderComponent<UpdateEndLocationForm>();
+        var component = RenderComponent<CreateEndLocationForm>();
 
         component.Find("#location").Change("Valid Location");
         component.Find("form").Submit();
@@ -37,14 +32,14 @@ public class UpdateEndLocationFormTests : TestContext
     }
 
     [Fact]
-    public void UpdateStartLocationForm_NotValidForm_ErrorsShouldBeMoreThanZero()
+    public void CreateEndLocationForm_NotValidForm_ErrorsShouldBeMoreThanZero()
     {
-        var component = RenderComponent<UpdateEndLocationForm>();
+        var component = RenderComponent<CreateEndLocationForm>();
 
         component.Find("form").Submit();
         component.GetChangesSinceFirstRender();
 
         var errors = component.FindAll(".validation-message");
-        Assert.True(errors.Count == 1);
+        Assert.True(errors.Count > 0);
     }
 }

@@ -5,9 +5,10 @@ namespace PlaceOfInterest.Application.UseCases.CreatePlaceOfInterest;
 
 public static class CreatePlaceOfInterestExtensions
 {
-    public static Domain.PlaceOfInterest ToDbEntity(this CreatePlaceOfInterestRequest request)
+    public static async Task<Domain.PlaceOfInterest> ToDbEntity(this CreatePlaceOfInterestRequest request,
+        IRepository<StartLocation> startRepository, IRepository<EndLocation> endRepository)
     {
-        return new Domain.PlaceOfInterest
+        var dbEntity = new Domain.PlaceOfInterest
         {
             Name = request.Name,
             Description = request.Description,
@@ -18,21 +19,50 @@ public static class CreatePlaceOfInterestExtensions
             TerrainScore = request.TerrainScore,
             StartLocation = new StartLocation(),
             EndLocation = new EndLocation()
-            //StartLocation = request.StartLocation,
-            //EndLocation = request.EndLocation
         };
+
+        if (request.StartLocationId != Guid.Empty)
+            dbEntity.StartLocation = await request.GetStartLocationEntity(startRepository);
+        else
+            dbEntity.StartLocation.Location = request.StartLocation;
+
+        if (request.EndLocationId != Guid.Empty)
+            dbEntity.EndLocation = await request.GetEndLocationEntity(endRepository);
+        else
+            dbEntity.EndLocation.Location = request.EndLocation;
+
+        return dbEntity;
     }
 
     public static void PreProcess(this CreatePlaceOfInterestRequest request,
         IRepository<Domain.PlaceOfInterest> repository)
+    {
+        var searchResult = repository.GetQuery().Count(x => x.PublicUniqueToken.Equals(request.PublicUniqueToken));
+
+        if (searchResult > 0) request.PublicUniqueToken = Guid.NewGuid().ToString();
+    }
+
+    public static string GeneratePublicToken(this CreatePlaceOfInterestRequest request)
     {
         var rnd = new Random();
         var tokenChars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789".ToCharArray();
 
         var token = rnd.GetItems(tokenChars, 6).ToString();
 
-        var searchResult = repository.GetQuery().Count(x => x.PublicUniqueToken.Equals(token));
+        return token!;
+    }
 
-        request.PublicUniqueToken = searchResult! > 0 ? Guid.NewGuid().ToString() : token!;
+    private static async Task<StartLocation> GetStartLocationEntity(this CreatePlaceOfInterestRequest request,
+        IRepository<StartLocation> repository)
+    {
+        var startLocation = await repository.GetByIdAsync(request.StartLocationId);
+        return startLocation ?? throw new InvalidOperationException("Start location not found.");
+    }
+
+    private static async Task<EndLocation> GetEndLocationEntity(this CreatePlaceOfInterestRequest request,
+        IRepository<EndLocation> repository)
+    {
+        var endLocation = await repository.GetByIdAsync(request.EndLocationId);
+        return endLocation ?? throw new InvalidOperationException("End location not found.");
     }
 }

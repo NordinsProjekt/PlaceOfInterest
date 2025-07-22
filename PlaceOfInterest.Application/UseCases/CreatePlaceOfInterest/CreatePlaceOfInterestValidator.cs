@@ -14,10 +14,8 @@ public class CreatePlaceOfInterestValidator : AbstractValidator<CreatePlaceOfInt
         RuleFor(x => x.PublicUniqueToken)
             .NotEmpty();
 
-        //RuleFor(x => x.StartLocation)
-        //    .ChildRules(startLocation => { startLocation.RuleFor(sl => sl.Location).NotEmpty(); });
+        When(x => x.StartLocationId == Guid.Empty, () => { RuleFor(x => x.StartLocation).NotEmpty(); });
 
-        //RuleFor(x => x.EndLocation)
-        //    .ChildRules(endLocation => { endLocation.RuleFor(el => el.Location).NotEmpty(); });
+        When(x => x.EndLocationId == Guid.Empty, () => { RuleFor(x => x.EndLocation).NotEmpty(); });
     }
 }

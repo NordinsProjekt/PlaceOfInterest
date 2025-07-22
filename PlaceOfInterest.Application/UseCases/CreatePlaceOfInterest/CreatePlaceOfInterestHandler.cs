@@ -1,12 +1,15 @@
 ﻿using FluentValidation;
 using MediatR;
 using PlaceOfInterest.Application.Interfaces;
+using PlaceOfInterest.Domain;
 
 namespace PlaceOfInterest.Application.UseCases.CreatePlaceOfInterest;
 
 public class CreatePlaceOfInterestHandler(
     CreatePlaceOfInterestValidator validator,
-    IRepository<Domain.PlaceOfInterest> repository)
+    IRepository<Domain.PlaceOfInterest> repository,
+    IRepository<StartLocation> startRepository,
+    IRepository<EndLocation> endRepository)
     : IRequestHandler<CreatePlaceOfInterestRequest, bool>
 {
     public async Task<bool> Handle(CreatePlaceOfInterestRequest request, CancellationToken cancellationToken)
@@ -18,10 +21,10 @@ public class CreatePlaceOfInterestHandler(
 
         request.PreProcess(repository);
 
-        var placeOfInterest = request.ToDbEntity();
+        var placeOfInterest = await request.ToDbEntity(startRepository, endRepository);
 
-        //await repository.AddAsync(startLocationEntity);
-        //await repository.SaveChangesAsync();
+        await repository.AddAsync(placeOfInterest);
+        await repository.SaveChangesAsync();
 
         return true;
     }
