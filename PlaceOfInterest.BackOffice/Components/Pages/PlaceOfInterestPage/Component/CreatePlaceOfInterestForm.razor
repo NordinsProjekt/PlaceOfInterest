@@ -17,12 +17,12 @@
 
     <FormRow Title="Start location">
         <StartLocationDropDown @bind-Value="CreatePlaceOfInterestRequest.StartLocationId"/>
-        <RadzenTextBox @bind-Value="CreatePlaceOfInterestRequest.StartLocation"/>
+        <InputText id="startlocation" @bind-Value="CreatePlaceOfInterestRequest.StartLocation" />
     </FormRow>
 
     <FormRow Title="End location">
         <EndLocationDropDown @bind-Value="CreatePlaceOfInterestRequest.EndLocationId"/>
-        <RadzenTextBox @bind-Value="CreatePlaceOfInterestRequest.EndLocation"/>
+        <InputText id="endlocation" @bind-Value="CreatePlaceOfInterestRequest.EndLocation" />
     </FormRow>
     <FormRow Title="Upload image">
         <RadzenUpload Multiple="false" Accept="image/*"
