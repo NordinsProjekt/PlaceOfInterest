@@ -11,6 +11,7 @@ using PlaceOfInterest.BackOffice.Components;
 using PlaceOfInterest.BackOffice.Components.Account;
 using PlaceOfInterest.BackOffice.Data;
 using PlaceOfInterest.EFCore;
+using PlaceOfInterest.EFCore.Extensions;
 using Radzen;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -29,6 +30,8 @@ builder.Services.AddMediatR(cfg =>
 builder.Services.AddValidatorsFromAssemblyContaining<CreateStartLocationValidator>();
 builder.Services.AddTransient(typeof(IPipelineBehavior<,>), typeof(TransactionBehavior<,>));
 builder.Services.AddScoped(typeof(IRepository<>), typeof(Repository<>));
+builder.Services.AddRepositories();
+
 builder.Services.AddAuthentication(options =>
     {
         options.DefaultScheme = IdentityConstants.ApplicationScheme;

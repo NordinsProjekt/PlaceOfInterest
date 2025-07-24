@@ -15,4 +15,8 @@
     <ProjectReference Include="..\PlaceOfInterest.Domain\PlaceOfInterest.Domain.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="UseCases\StartLocation\Models\" />
+  </ItemGroup>
+
 </Project>

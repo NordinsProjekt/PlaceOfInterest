@@ -1,0 +1,61 @@
+﻿@using PlaceOfInterest.Application.Interfaces
+@using PlaceOfInterest.Application.UseCases.UpdatePlaceOfInterest
+@using PlaceOfInterest.BackOffice.Components.Pages.StartLocationPage.Components
+@using PlaceOfInterest.BackOffice.Components.Pages.EndLocationPage.Components
+@using PlaceOfInterest.BackOffice.Components.Shared
+@using PlaceOfInterest.Domain
+
+<h3>Update Point of interest</h3>
+
+<EditForm EditContext="EditContext" OnValidSubmit="HandleValidSubmit">
+    <FluentValidationValidator/>
+    <ValidationSummary/>
+    <FormRow Title="Name">
+        <InputText id="name" class="form-control" @bind-Value="UpdatePlaceOfInterestRequest.Name"/>
+    </FormRow>
+    <FormRow Title="Description">
+        <InputTextArea id="description" class="form-control" @bind-Value="UpdatePlaceOfInterestRequest.Description"/>
+    </FormRow>
+
+    <FormRow Title="Start location">
+        <StartLocationDropDown @bind-Value="UpdatePlaceOfInterestRequest.StartLocationId"/>
+        <InputText id="startlocation" @bind-Value="UpdatePlaceOfInterestRequest.StartLocation"/>
+    </FormRow>
+
+    <FormRow Title="End location">
+        <EndLocationDropDown @bind-Value="UpdatePlaceOfInterestRequest.EndLocationId"/>
+        <InputText id="endlocation" @bind-Value="UpdatePlaceOfInterestRequest.EndLocation"/>
+    </FormRow>
+    <FormRow Title="Upload image">
+        <RadzenUpload Multiple="false" Accept="image/*"
+                      @bind-Value="UpdatePlaceOfInterestRequest.ImageBytes" style="width: 100%"/>
+    </FormRow>
+
+    <button type="submit" class="btn btn-primary">Submit</button>
+</EditForm>
+
+@code {
+    [Inject] public DialogService DialogService { get; set; }
+    [Inject] public IMediator Mediator { get; set; }
+    [Inject] public IRepository<PlaceOfInterest> Repository { get; set; }
+
+    [Parameter] public Guid Id { get; set; }
+
+    private UpdatePlaceOfInterestRequest UpdatePlaceOfInterestRequest { get; set; } = new();
+    private EditContext EditContext { get; set; }
+
+
+    protected override async Task OnInitializedAsync()
+    {
+        var placeOfInterest = await Repository.GetByIdAsync(Id, e => e.StartLocation, e => e.EndLocation);
+        UpdatePlaceOfInterestRequest = placeOfInterest.ToUpdateRequest();
+        EditContext = new EditContext(UpdatePlaceOfInterestRequest);
+    }
+
+    private async Task HandleValidSubmit()
+    {
+        await Mediator.Send(UpdatePlaceOfInterestRequest);
+        await DialogService.CloseSideAsync();
+    }
+
+}

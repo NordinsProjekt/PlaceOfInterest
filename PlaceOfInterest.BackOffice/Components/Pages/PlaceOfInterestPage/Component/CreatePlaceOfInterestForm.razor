@@ -1,0 +1,55 @@
+﻿@using PlaceOfInterest.Application.UseCases.CreatePlaceOfInterest
+@using PlaceOfInterest.BackOffice.Components.Pages.StartLocationPage.Components
+@using PlaceOfInterest.BackOffice.Components.Pages.EndLocationPage.Components
+@using PlaceOfInterest.BackOffice.Components.Shared
+
+<h3>Create Point of interest</h3>
+
+<EditForm EditContext="EditContext" OnValidSubmit="HandleValidSubmit">
+    <FluentValidationValidator/>
+    <ValidationSummary/>
+    <FormRow Title="Name">
+        <InputText id="name" class="form-control" @bind-Value="CreatePlaceOfInterestRequest.Name"/>
+    </FormRow>
+    <FormRow Title="Description">
+        <InputTextArea id="description" class="form-control" @bind-Value="CreatePlaceOfInterestRequest.Description"/>
+    </FormRow>
+
+    <FormRow Title="Start location">
+        <StartLocationDropDown @bind-Value="CreatePlaceOfInterestRequest.StartLocationId"/>
+        <InputText id="startlocation" @bind-Value="CreatePlaceOfInterestRequest.StartLocation"/>
+    </FormRow>
+
+    <FormRow Title="End location">
+        <EndLocationDropDown @bind-Value="CreatePlaceOfInterestRequest.EndLocationId"/>
+        <InputText id="endlocation" @bind-Value="CreatePlaceOfInterestRequest.EndLocation"/>
+    </FormRow>
+    <FormRow Title="Upload image">
+        <RadzenUpload Multiple="false" Accept="image/*"
+                      @bind-Value="CreatePlaceOfInterestRequest.ImageBytes" style="width: 100%"/>
+    </FormRow>
+
+    <button type="submit" class="btn btn-primary">Submit</button>
+</EditForm>
+
+@code {
+    [Inject] public DialogService DialogService { get; set; }
+    [Inject] public IMediator Mediator { get; set; }
+
+    private CreatePlaceOfInterestRequest CreatePlaceOfInterestRequest { get; set; } = new();
+    private EditContext EditContext { get; set; }
+
+
+    protected override void OnInitialized()
+    {
+        CreatePlaceOfInterestRequest.PublicUniqueToken = CreatePlaceOfInterestRequest.GeneratePublicToken();
+        EditContext = new EditContext(CreatePlaceOfInterestRequest);
+    }
+
+    private async Task HandleValidSubmit()
+    {
+        await Mediator.Send(CreatePlaceOfInterestRequest);
+        await DialogService.CloseSideAsync();
+    }
+
+}
