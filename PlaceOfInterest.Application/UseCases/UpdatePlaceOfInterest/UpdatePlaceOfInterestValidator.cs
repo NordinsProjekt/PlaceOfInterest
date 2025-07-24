@@ -1,10 +1,10 @@
 ﻿using FluentValidation;
 
-namespace PlaceOfInterest.Application.UseCases.CreatePlaceOfInterest;
+namespace PlaceOfInterest.Application.UseCases.UpdatePlaceOfInterest;
 
-public class CreatePlaceOfInterestValidator : AbstractValidator<CreatePlaceOfInterestRequest>
+public class UpdatePlaceOfInterestValidator : AbstractValidator<UpdatePlaceOfInterestRequest>
 {
-    public CreatePlaceOfInterestValidator()
+    public UpdatePlaceOfInterestValidator()
     {
         RuleFor(x => x.Name)
             .NotEmpty()

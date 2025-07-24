@@ -1,4 +1,4 @@
-﻿@using global::PlaceOfInterest.Application.UseCases.CreatePlaceOfInterest
+﻿@using PlaceOfInterest.Application.UseCases.CreatePlaceOfInterest
 @using PlaceOfInterest.BackOffice.Components.Pages.StartLocationPage.Components
 @using PlaceOfInterest.BackOffice.Components.Pages.EndLocationPage.Components
 @using PlaceOfInterest.BackOffice.Components.Shared
@@ -17,12 +17,12 @@
 
     <FormRow Title="Start location">
         <StartLocationDropDown @bind-Value="CreatePlaceOfInterestRequest.StartLocationId"/>
-        <InputText id="startlocation" @bind-Value="CreatePlaceOfInterestRequest.StartLocation" />
+        <InputText id="startlocation" @bind-Value="CreatePlaceOfInterestRequest.StartLocation"/>
     </FormRow>
 
     <FormRow Title="End location">
         <EndLocationDropDown @bind-Value="CreatePlaceOfInterestRequest.EndLocationId"/>
-        <InputText id="endlocation" @bind-Value="CreatePlaceOfInterestRequest.EndLocation" />
+        <InputText id="endlocation" @bind-Value="CreatePlaceOfInterestRequest.EndLocation"/>
     </FormRow>
     <FormRow Title="Upload image">
         <RadzenUpload Multiple="false" Accept="image/*"

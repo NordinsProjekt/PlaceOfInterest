@@ -47,9 +47,9 @@ public static class CreatePlaceOfInterestExtensions
         var rnd = new Random();
         var tokenChars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789".ToCharArray();
 
-        var token = rnd.GetItems(tokenChars, 6).ToString();
+        var token = new string(rnd.GetItems(tokenChars, 8));
 
-        return token!;
+        return token;
     }
 
     private static async Task<StartLocation> GetStartLocationEntity(this CreatePlaceOfInterestRequest request,

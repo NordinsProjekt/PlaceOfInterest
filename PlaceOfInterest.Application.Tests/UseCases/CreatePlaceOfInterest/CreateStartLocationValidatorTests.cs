@@ -13,7 +13,7 @@ public class CreatePlaceOfInterestValidatorTests
             StartLocation = "start",
             EndLocation = "end",
             Name = "name",
-            PublicUniqueToken = "fgrte"
+            PublicUniqueToken = "MustBe8c"
         };
 
         var result = validator.Validate(request);
@@ -85,6 +85,34 @@ public class CreatePlaceOfInterestValidatorTests
         var request = new CreatePlaceOfInterestRequest
         {
             PublicUniqueToken = ""
+        };
+
+        var result = validator.Validate(request);
+
+        Assert.Contains(result.Errors, error => error.PropertyName == nameof(CreatePlaceOfInterestRequest.EndLocation));
+    }
+
+    [Fact]
+    public void Validator_PublicUniqueTokenIsToShort_ShouldNotValidate()
+    {
+        var validator = new CreatePlaceOfInterestValidator();
+        var request = new CreatePlaceOfInterestRequest
+        {
+            PublicUniqueToken = "Short"
+        };
+
+        var result = validator.Validate(request);
+
+        Assert.Contains(result.Errors, error => error.PropertyName == nameof(CreatePlaceOfInterestRequest.EndLocation));
+    }
+
+    [Fact]
+    public void Validator_PublicUniqueTokenIsToLong_ShouldNotValidate()
+    {
+        var validator = new CreatePlaceOfInterestValidator();
+        var request = new CreatePlaceOfInterestRequest
+        {
+            PublicUniqueToken = "CantBeNine"
         };
 
         var result = validator.Validate(request);
