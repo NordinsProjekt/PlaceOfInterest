@@ -119,4 +119,18 @@ public class UpdatePlaceOfInterestValidatorTests
 
         Assert.Contains(result.Errors, error => error.PropertyName == nameof(UpdatePlaceOfInterestRequest.EndLocation));
     }
+
+    [Fact]
+    public void Validator_PublicUniqueTokenIs36Chars_ShouldValidate()
+    {
+        var validator = new UpdatePlaceOfInterestValidator();
+        var request = new UpdatePlaceOfInterestRequest
+        {
+            PublicUniqueToken = Guid.NewGuid().ToString()
+        };
+
+        var result = validator.Validate(request);
+
+        Assert.Contains(result.Errors, error => error.PropertyName == nameof(UpdatePlaceOfInterestRequest.EndLocation));
+    }
 }

@@ -18,9 +18,7 @@ public static class UpdatePlaceOfInterestExtensions
             ImageUrl = entity.ImageUrl,
             TerrainScore = entity.TerrainScore,
             StartLocationId = entity.StartLocation.Id,
-            StartLocation = entity.StartLocation.Name,
-            EndLocationId = entity.EndLocation.Id,
-            EndLocation = entity.EndLocation.Name
+            EndLocationId = entity.EndLocation.Id
         };
     }
 

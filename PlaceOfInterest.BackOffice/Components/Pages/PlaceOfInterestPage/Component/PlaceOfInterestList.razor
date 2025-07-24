@@ -1,6 +1,7 @@
 ﻿@using PlaceOfInterest.BackOffice.Components.Pages.PlaceOfInterestPage.Models
 @using global::PlaceOfInterest.Application.Interfaces
 @using global::PlaceOfInterest.Domain
+@using PlaceOfInterest.Application.UseCases.DeletePlaceOfInterest
 @using PlaceOfInterest.BackOffice.Components.Pages.PlaceOfInterestPage.Models.Extensions
 
 @rendermode InteractiveServer
@@ -23,12 +24,12 @@
             <RadzenDataGridColumn Property="TerrainScore" Title="Skapad" />
             <RadzenDataGridColumn Property="Score" Title="Poäng" />
             <RadzenDataGridColumn Property="Verified" Title=""/>
-@*             <RadzenDataGridColumn Title="Action">
+            <RadzenDataGridColumn Title="Action">
                 <Template>
                     <RadzenIcon Icon="delete" @onclick="() => DeletePlaceOfInterest(context.Id)" />
                     <RadzenIcon Icon="update" @onclick="() => UpdatePlaceOfInterest(context.Id)" />
                 </Template>
-            </RadzenDataGridColumn> *@
+            </RadzenDataGridColumn>
         </Columns>
     </RadzenDataGrid>
 }
@@ -64,28 +65,28 @@ else
         GetLocations();
     }
 
-    // private async Task DeletePlaceOfInterest(Guid id)
-    // {
-    //     var delete = await DialogService.Alert("Delete the place?");
-    //     if (delete is true)
-    //     {
-    //         try
-    //         {
-    //             await Mediator.Send(new DeletePlaceOfInterestRequest { Id = id });
-    //             NotificationService.Notify(NotificationSeverity.Info, "Place is deleted", "", 5000);
-    //         }
-    //         catch (Exception)
-    //         {
-    //             NotificationService.Notify(NotificationSeverity.Info, "Place is being used", "", 5000);
-    //         }
+    private async Task DeletePlaceOfInterest(Guid id)
+    {
+        var delete = await DialogService.Alert("Delete the place?");
+        if (delete is true)
+        {
+            try
+            {
+                await Mediator.Send(new DeletePlaceOfInterestRequest { Id = id });
+                NotificationService.Notify(NotificationSeverity.Info, "Place is deleted", "", 5000);
+            }
+            catch (Exception)
+            {
+                NotificationService.Notify(NotificationSeverity.Info, "Place is being used", "", 5000);
+            }
 
-    //         GetLocations();
-    //     }
-    // }
+            GetLocations();
+        }
+    }
 
-    // private async Task UpdatePlaceOfInterest(Guid id)
-    // {
-    //     await DialogService.OpenSideAsync<UpdatePlaceOfInterestForm>("", new Dictionary<string, object> { { "Id", id } });
-    //     GetLocations();
-    // }
+    private async Task UpdatePlaceOfInterest(Guid id)
+    {
+        await DialogService.OpenSideAsync<UpdatePlaceOfInterestForm>("", new Dictionary<string, object> { { "Id", id } });
+        GetLocations();
+    }
 }
