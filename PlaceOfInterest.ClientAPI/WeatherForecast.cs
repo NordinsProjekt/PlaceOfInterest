@@ -1,4 +1,4 @@
-namespace PlaceOfInterest.API;
+namespace PlaceOfInterest.ClientAPI;
 
 public class WeatherForecast
 {
