@@ -10,4 +10,11 @@
     <PackageReference Include="Microsoft.AspNetCore.OpenApi" Version="9.0.7" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\MediatR\MediatRCore.csproj" />
+    <ProjectReference Include="..\PlaceOfInterest.Application\PlaceOfInterest.Application.csproj" />
+    <ProjectReference Include="..\PlaceOfInterest.Domain\PlaceOfInterest.Domain.csproj" />
+    <ProjectReference Include="..\PlaceOfInterest.EFCore\PlaceOfInterest.EFCore.csproj" />
+  </ItemGroup>
+
 </Project>
