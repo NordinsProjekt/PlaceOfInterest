@@ -1,6 +1,9 @@
 ﻿using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using PlaceOfInterest.Application.Interfaces;
+using PlaceOfInterest.Application.UseCases.CreateStartLocation;
+using PlaceOfInterest.Application.UseCases.DeleteStartLocation;
+using PlaceOfInterest.Application.UseCases.UpdateStartLocation;
 using PlaceOfInterest.ClientAPI.Dtos;
 using PlaceOfInterest.ClientAPI.Extensions;
 using PlaceOfInterest.Domain;
@@ -12,34 +15,80 @@ namespace PlaceOfInterest.ClientAPI.Controllers;
 public class StartLocationController(IMediator mediator, IRepository<StartLocation> repository) : ControllerBase
 {
     [HttpGet]
-    public IEnumerable<StartLocationApiDto> Get([FromBody] StartLocationApiRequest request)
+    public ActionResult<IEnumerable<StartLocationApiDto>> Get([FromQuery] StartLocationApiRequest request)
     {
-        var startLocations = repository.GetAll<StartLocation, string>(request.Skip, request.Take, x => x.Name, true);
-        return startLocations.ToApiDto();
+        try
+        {
+            var startLocations = repository.GetAll<StartLocation, string>(
+                request.Skip,
+                request.Take,
+                x => x.Name,
+                true);
+
+            return Ok(startLocations.ToApiDto());
+        }
+        catch (Exception ex)
+        {
+            return BadRequest(ex.Message);
+        }
     }
 
-    // GET api/<StartLocationController>/5
-    [HttpGet("{id}")]
-    public string Get(int id)
+    [HttpGet("{id:guid}")]
+    public async Task<ActionResult<StartLocationApiDto>> Get(Guid id)
     {
-        return "value";
+        try
+        {
+            var startLocation = await repository.GetByIdAsync(id);
+            if (startLocation == null)
+                return NotFound();
+
+            return Ok(new[] { startLocation }.ToApiDto().First());
+        }
+        catch (Exception ex)
+        {
+            return BadRequest(ex.Message);
+        }
     }
 
-    // POST api/<StartLocationController>
     [HttpPost]
-    public void Post([FromBody] string value)
+    public async Task<ActionResult<bool>> Post([FromBody] CreateStartLocationRequest request)
     {
+        try
+        {
+            var result = await mediator.Send(request);
+            return Ok(result);
+        }
+        catch (Exception ex)
+        {
+            return BadRequest(ex.Message);
+        }
     }
 
-    // PUT api/<StartLocationController>/5
-    [HttpPut("{id}")]
-    public void Put(int id, [FromBody] string value)
+    [HttpPut("{id:guid}")]
+    public async Task<ActionResult<bool>> Put([FromBody] UpdateStartLocationRequest request)
     {
+        try
+        {
+            var result = await mediator.Send(request);
+            return Ok(result);
+        }
+        catch (Exception ex)
+        {
+            return BadRequest(ex.Message);
+        }
     }
 
-    // DELETE api/<StartLocationController>/5
-    [HttpDelete("{id}")]
-    public void Delete(int id)
+    [HttpDelete("{id:guid}")]
+    public async Task<ActionResult<bool>> Delete(Guid id)
     {
+        try
+        {
+            var result = await mediator.Send(new DeleteStartLocationRequest { Id = id });
+            return Ok(result);
+        }
+        catch (Exception ex)
+        {
+            return BadRequest(ex.Message);
+        }
     }
 }
