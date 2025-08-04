@@ -35,6 +35,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PlaceOfInterest.GoogleMaps"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PlaceOfInterest.BackOffice.Tests", "PlaceOfInterest.BackOffice.Tests\PlaceOfInterest.BackOffice.Tests.csproj", "{CE97177D-8AB6-4EBB-B2BC-4B3A59DFF5C6}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PlaceOfInterest.ClientAPI", "PlaceOfInterest.ClientAPI\PlaceOfInterest.ClientAPI.csproj", "{99825CD9-FC46-4A2C-93B2-8B19EEB3DF4E}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -85,6 +87,10 @@ Global
 		{CE97177D-8AB6-4EBB-B2BC-4B3A59DFF5C6}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{CE97177D-8AB6-4EBB-B2BC-4B3A59DFF5C6}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{CE97177D-8AB6-4EBB-B2BC-4B3A59DFF5C6}.Release|Any CPU.Build.0 = Release|Any CPU
+		{99825CD9-FC46-4A2C-93B2-8B19EEB3DF4E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{99825CD9-FC46-4A2C-93B2-8B19EEB3DF4E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{99825CD9-FC46-4A2C-93B2-8B19EEB3DF4E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{99825CD9-FC46-4A2C-93B2-8B19EEB3DF4E}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -101,6 +107,7 @@ Global
 		{2104E64F-4147-4D67-9084-BA2B13199EDA} = {7AC8C470-D168-4AB7-AAC8-26B3C2AAB57C}
 		{C2CA4C6E-D263-44A7-A391-5E9CA8E3ABAD} = {D6EDF613-3164-46CF-B761-1F21293B5790}
 		{CE97177D-8AB6-4EBB-B2BC-4B3A59DFF5C6} = {7AC8C470-D168-4AB7-AAC8-26B3C2AAB57C}
+		{99825CD9-FC46-4A2C-93B2-8B19EEB3DF4E} = {02EA681E-C7D8-13C7-8484-4AC65E1B71E8}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {2AEAD861-CA64-4284-A29C-3478D9F181BF}

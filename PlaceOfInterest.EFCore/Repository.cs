@@ -32,6 +32,26 @@ public class Repository<T>(PlaceOfInterestContext context) : IRepository<T>
             .ToList();
     }
 
+    public List<T> GetAll<T1, TKey>(int skip, int take, Func<T, TKey> orderByKey, bool verifiedOnly,
+        params Expression<Func<T, object>>[] includes)
+    {
+        IQueryable<T> query = context.Set<T>();
+
+        foreach (var include in includes) query = query.Include(include);
+
+        return verifiedOnly
+            ? query.AsEnumerable().Where(x => x.Verified)
+                .OrderBy(orderByKey)
+                .Skip(skip)
+                .Take(take)
+                .ToList()
+            : query.AsEnumerable()
+                .OrderBy(orderByKey)
+                .Skip(skip)
+                .Take(take)
+                .ToList();
+    }
+
     public int CountMatches(Expression<Func<T, bool>> predicate)
     {
         return context.Set<T>().Count(predicate);

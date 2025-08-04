@@ -9,6 +9,9 @@ public interface IRepository<TEntity>
     List<TEntity> GetAll<T, TKey>(int skip, int take, Func<TEntity, TKey> orderByKey,
         params Expression<Func<TEntity, object>>[] includes);
 
+    List<TEntity> GetAll<T, TKey>(int skip, int take, Func<TEntity, TKey> orderByKey, bool verifiedOnly,
+        params Expression<Func<TEntity, object>>[] includes);
+
     int CountMatches(Expression<Func<TEntity, bool>> predicate);
 
     Task AddAsync(TEntity entity);
