@@ -1,31 +1,28 @@
-﻿using MediatR;
+using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using PlaceOfInterest.Application.Interfaces;
-using PlaceOfInterest.Application.UseCases.CreateStartLocation;
-using PlaceOfInterest.Application.UseCases.DeleteStartLocation;
-using PlaceOfInterest.Application.UseCases.UpdateStartLocation;
+using PlaceOfInterest.Application.UseCases.CreatePlaceOfInterest;
+using PlaceOfInterest.Application.UseCases.DeletePlaceOfInterest;
+using PlaceOfInterest.Application.UseCases.UpdatePlaceOfInterest;
 using PlaceOfInterest.ClientAPI.Dtos;
 using PlaceOfInterest.ClientAPI.Extensions;
-using PlaceOfInterest.Domain;
 
 namespace PlaceOfInterest.ClientAPI.Controllers;
 
 [Route("api/[controller]")]
 [ApiController]
-public class StartLocationController(IMediator mediator, IRepository<StartLocation> repository) : ControllerBase
+public class PlaceOfInterestController(
+    IMediator mediator,
+    IRepository<Domain.PlaceOfInterest> repository) : ControllerBase
 {
     [HttpGet]
-    public ActionResult<IEnumerable<StartLocationApiDto>> Get([FromQuery] StartLocationApiRequest request)
+    public ActionResult<IEnumerable<PlaceOfInterestApiDto>> Get([FromQuery] int skip = 0, [FromQuery] int take = 20)
     {
         try
         {
-            var startLocations = repository.GetAll<StartLocation, string>(
-                request.Skip,
-                request.Take,
-                x => x.Name,
-                true);
-
-            return Ok(startLocations.ToApiDto());
+            var pois = repository.GetAll<Domain.PlaceOfInterest, string>(skip, take, x => x.Name, true,
+                x => x.StartLocation, x => x.EndLocation);
+            return Ok(pois.ToApiDto());
         }
         catch (Exception ex)
         {
@@ -34,15 +31,14 @@ public class StartLocationController(IMediator mediator, IRepository<StartLocati
     }
 
     [HttpGet("{id:guid}")]
-    public async Task<ActionResult<StartLocationApiDto>> Get(Guid id)
+    public async Task<ActionResult<PlaceOfInterestApiDto>> Get(Guid id)
     {
         try
         {
-            var startLocation = await repository.GetByIdAsync(id);
-            if (startLocation == null)
+            var poi = await repository.GetByIdAsync(id, x => x.StartLocation, x => x.EndLocation);
+            if (poi == null)
                 return NotFound();
-
-            return Ok(startLocation.ToApiDto());
+            return Ok(poi.ToApiDto());
         }
         catch (Exception ex)
         {
@@ -51,7 +47,7 @@ public class StartLocationController(IMediator mediator, IRepository<StartLocati
     }
 
     [HttpPost]
-    public async Task<ActionResult<bool>> Post([FromBody] CreateStartLocationRequest request)
+    public async Task<ActionResult<bool>> Post([FromBody] CreatePlaceOfInterestRequest request)
     {
         try
         {
@@ -65,7 +61,7 @@ public class StartLocationController(IMediator mediator, IRepository<StartLocati
     }
 
     [HttpPut("{id:guid}")]
-    public async Task<ActionResult<bool>> Put([FromBody] UpdateStartLocationRequest request)
+    public async Task<ActionResult<bool>> Put([FromBody] UpdatePlaceOfInterestRequest request)
     {
         try
         {
@@ -83,7 +79,7 @@ public class StartLocationController(IMediator mediator, IRepository<StartLocati
     {
         try
         {
-            var result = await mediator.Send(new DeleteStartLocationRequest { Id = id });
+            var result = await mediator.Send(new DeletePlaceOfInterestRequest { Id = id });
             return Ok(result);
         }
         catch (Exception ex)
