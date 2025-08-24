@@ -14,6 +14,7 @@ public class CreatePlaceOfInterestHandler(
 {
     public async Task<bool> Handle(CreatePlaceOfInterestRequest request, CancellationToken cancellationToken)
     {
+        request.PublicUniqueToken = request.GeneratePublicToken();
         var validatorResult = await validator.ValidateAsync(request, cancellationToken);
 
         if (!validatorResult.IsValid)

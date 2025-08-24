@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using MVC.Models.PlaceOfInterest;
+using PlaceOfInterest.Application.UseCases.CreatePlaceOfInterest;
 using PlaceOfInterest.ClientAPI.Dtos;
 using System.Net.Http;
 using System.Net.Http.Json;
@@ -40,7 +41,7 @@ public class PlaceOfInterestController : Controller
 
     [HttpPost]
     [ValidateAntiForgeryToken]
-    public async Task<IActionResult> Create(PlaceOfInterestApiDto model)
+    public async Task<IActionResult> Create(CreatePlaceOfInterestRequest model)
     {
         if (!ModelState.IsValid)
             return View(model);

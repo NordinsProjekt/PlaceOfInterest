@@ -2,7 +2,43 @@
     ViewData["Title"] = "Home Page";
 }
 
-<div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://learn.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+<div class="rz-p-12">
+    <div class="rz-text-align-center mb-4">
+        <h1 class="rz-display-4">Welcome to Place of Interest</h1>
+        <p class="rz-text-2xl mt-4">Discover and explore interesting places</p>
+    </div>
+
+    <div class="container mt-5">
+        <div class="row justify-content-center">
+            <div class="col-md-4">
+                <a href="@Url.Action("Index", "PlaceOfInterest")" class="text-decoration-none">
+                    <div class="rz-card rz-background-color-primary-lighter p-4 text-center hover-card">
+                        <i class="rz-icon-map rz-text-4xl mb-3"></i>
+                        <h3 class="rz-text-xl mb-2">Places of Interest</h3>
+                        <p class="rz-text-secondary">Explore and manage interesting locations</p>
+                    </div>
+                </a>
+            </div>
+        </div>
+    </div>
 </div>
+
+<style>
+    .hover-card {
+        transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+    }
+
+    .hover-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+    }
+
+    .rz-icon-map:before {
+        content: "\e55f";  /* Material icon code for map */
+        font-family: "Material Icons";
+    }
+</style>
+
+@section Scripts {
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+}

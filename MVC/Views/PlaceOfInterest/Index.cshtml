@@ -3,38 +3,50 @@
     ViewData["Title"] = "Places of Interest";
 }
 
-<h3>Places of Interest</h3>
+<div class="d-flex align-items-center justify-content-between mb-3">
+    <h3 class="mb-0">Places of Interest</h3>
+    <a asp-action="Create" class="rz-button btn btn-primary">Create New</a>
+</div>
 
-<div class="container">
-    @foreach (var poi in Model.PlaceOfInterests)
-    {
-        <div class="rz-card" style="cursor: pointer; margin-bottom: 1rem;" onclick="window.location.href='@Url.Action("Details", "PlaceOfInterest", new { id = poi.Id })'">
-            <div class="d-flex flex-row align-items-center">
-                <div>
-                    <h4 class="mb-0">@poi.Name</h4>
-                    <p class="mb-0 text-muted">@poi.Description</p>
-                    <div class="d-flex mt-2">
-                        <div class="me-3">
-                            <small class="text-muted">Terrain Score:</small>
-                            <div>@poi.TerrainScore</div>
+@if (Model.PlaceOfInterests == null || !Model.PlaceOfInterests.Any())
+{
+    <div class="alert alert-info mt-4 text-center">
+        Found no verified places to visit. Please check back later.
+    </div>
+}
+else
+{
+    <div class="container">
+        @foreach (var poi in Model.PlaceOfInterests)
+        {
+            <div class="rz-card" style="cursor: pointer; margin-bottom: 1rem;" onclick="window.location.href='@Url.Action("Details", "PlaceOfInterest", new { id = poi.Id })'">
+                <div class="d-flex flex-row align-items-center">
+                    <div>
+                        <h4 class="mb-0">@poi.Name</h4>
+                        <p class="mb-0 text-muted">@poi.Description</p>
+                        <div class="d-flex mt-2">
+                            <div class="me-3">
+                                <small class="text-muted">Terrain Score:</small>
+                                <div>@poi.TerrainScore</div>
+                            </div>
+                            <div>
+                                <small class="text-muted">Score:</small>
+                                <div>@poi.Score</div>
+                            </div>
                         </div>
-                        <div>
-                            <small class="text-muted">Score:</small>
-                            <div>@poi.Score</div>
+                        <div class="mt-2">
+                            <small class="text-muted">Start Location:</small>
+                            <div>@poi.StartLocation?.Name</div>
+                            <small class="text-muted">End Location:</small>
+                            <div>@poi.EndLocation?.Name</div>
                         </div>
+                        @if (poi.Verified)
+                        {
+                            <span class="rz-badge rz-badge-success mt-2">Verified</span>
+                        }
                     </div>
-                    <div class="mt-2">
-                        <small class="text-muted">Start Location:</small>
-                        <div>@poi.StartLocation?.Name</div>
-                        <small class="text-muted">End Location:</small>
-                        <div>@poi.EndLocation?.Name</div>
-                    </div>
-                    @if (poi.Verified)
-                    {
-                        <span class="rz-badge rz-badge-success mt-2">Verified</span>
-                    }
                 </div>
             </div>
-        </div>
-    }
-</div>
+        }
+    </div>
+}
