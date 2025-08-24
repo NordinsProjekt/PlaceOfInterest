@@ -1,0 +1,76 @@
+@page "/placeofinterest"
+@using PlaceOfInterest.ClientAPI.Dtos
+@using ClientApp.Services
+@inject PlaceOfInterestApiClient ApiClient
+@inject NavigationManager NavigationManager
+
+<h3>Places of Interest</h3>
+
+<div class="mb-3">
+    <button class="btn btn-primary" @onclick="NavigateToCreate">Create New</button>
+</div>
+
+@if (places == null)
+{
+    <p>Loading...</p>
+}
+else if (!places.Any())
+{
+    <p>No places of interest found.</p>
+}
+else
+{
+    <div class="row row-cols-1 row-cols-md-3 g-4">
+        @foreach (var place in places)
+        {
+            <div class="col">
+                <div class="card h-100">
+                    @if (!string.IsNullOrEmpty(place.ImageUrl))
+                    {
+                        <img src="@place.ImageUrl" class="card-img-top" alt="@place.Name">
+                    }
+                    <div class="card-body">
+                        <h5 class="card-title">@place.Name</h5>
+                        <p class="card-text">@place.Description</p>
+                        <div class="d-flex justify-content-between align-items-center">
+                            <div>
+                                <span class="badge bg-primary me-2">Terrain: @place.TerrainScore</span>
+                                <span class="badge bg-success">Score: @place.Score</span>
+                            </div>
+                            @if (place.Verified)
+                            {
+                                <span class="badge bg-info">Verified</span>
+                            }
+                        </div>
+                    </div>
+                    <div class="card-footer">
+                        <small class="text-muted">
+                            Start: @place.StartLocation.Name
+                            <br />
+                            End: @place.EndLocation.Name
+                        </small>
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+}
+
+@code {
+    private IEnumerable<PlaceOfInterestApiDto>? places;
+
+    protected override async Task OnInitializedAsync()
+    {
+        await LoadPlaces();
+    }
+
+    private async Task LoadPlaces()
+    {
+        places = await ApiClient.GetAllAsync();
+    }
+
+    private void NavigateToCreate()
+    {
+        NavigationManager.NavigateTo("/placeofinterest/create");
+    }
+}
