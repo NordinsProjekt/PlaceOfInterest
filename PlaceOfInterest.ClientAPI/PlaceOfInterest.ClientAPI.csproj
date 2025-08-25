@@ -12,6 +12,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\Contracts\Contracts.csproj" />
     <ProjectReference Include="..\MediatR\MediatRCore.csproj" />
     <ProjectReference Include="..\PlaceOfInterest.Application\PlaceOfInterest.Application.csproj" />
     <ProjectReference Include="..\PlaceOfInterest.Domain\PlaceOfInterest.Domain.csproj" />

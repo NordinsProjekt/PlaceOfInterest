@@ -38,7 +38,7 @@ public class StartLocationController(IMediator mediator, IRepository<StartLocati
     {
         try
         {
-            var startLocation = await repository.GetByIdAsync(id);
+            var startLocation = await repository.GetById(id);
             if (startLocation == null)
                 return NotFound();
 

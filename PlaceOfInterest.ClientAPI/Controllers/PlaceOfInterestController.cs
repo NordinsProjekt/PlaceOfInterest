@@ -35,7 +35,7 @@ public class PlaceOfInterestController(
     {
         try
         {
-            var poi = await repository.GetByIdAsync(id, x => x.StartLocation, x => x.EndLocation);
+            var poi = await repository.GetById(id, x => x.StartLocation, x => x.EndLocation);
             if (poi == null)
                 return NotFound();
             return Ok(poi.ToApiDto());

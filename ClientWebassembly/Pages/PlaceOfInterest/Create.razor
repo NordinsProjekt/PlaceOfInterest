@@ -1,0 +1,110 @@
+@page "/placeofinterest/create"
+@using Contracts.ApiDtos.Requests
+@using Contracts.Models.Dto
+@using ClientWebassembly.Services
+@inject PlaceOfInterestApiClient ApiClient
+@inject NavigationManager NavigationManager
+@inject IJSRuntime JSRuntime
+
+<h2 class="rz-title">Create Place Of Interest</h2>
+
+<div class="alert alert-info mb-4 text-center">
+    Please note: Your place must be verified by an admin before it will be visible to others.
+</div>
+
+<EditForm Model="@request" OnValidSubmit="HandleValidSubmit" class="rz-form">
+    <DataAnnotationsValidator />
+
+    <div class="rz-form-group mb-3">
+        <label for="name" class="rz-label">Name</label>
+        <InputText id="name" class="rz-input form-control" @bind-Value="request.Name" />
+        <ValidationMessage For="@(() => request.Name)" class="rz-validation-message text-danger" />
+    </div>
+
+    <div class="rz-form-group mb-3">
+        <label for="description" class="rz-label">Description</label>
+        <InputTextArea id="description" class="rz-input form-control" @bind-Value="request.Description" />
+        <ValidationMessage For="@(() => request.Description)" class="rz-validation-message text-danger" />
+    </div>
+
+    <div class="rz-form-group mb-3">
+        <label for="startLocation" class="rz-label">Start Location</label>
+        <div class="input-group">
+            <InputText id="startLocation" class="rz-input form-control" @bind-Value="request.StartLocation" />
+            <button type="button" class="rz-button btn btn-outline-secondary" @onclick="() => GetLocation('startLocation')">Get GPS</button>
+        </div>
+        <ValidationMessage For="@(() => request.StartLocation)" class="rz-validation-message text-danger" />
+    </div>
+
+    <div class="rz-form-group mb-3">
+        <label for="endLocation" class="rz-label">End Location</label>
+        <div class="input-group">
+            <InputText id="endLocation" class="rz-input form-control" @bind-Value="request.EndLocation" />
+            <button type="button" class="rz-button btn btn-outline-secondary" @onclick="() => GetLocation('endLocation')">Get GPS</button>
+        </div>
+        <ValidationMessage For="@(() => request.EndLocation)" class="rz-validation-message text-danger" />
+    </div>
+
+    <div class="rz-form-group mb-3">
+        <label for="terrainScore" class="rz-label">Terrain Score</label>
+        <InputNumber id="terrainScore" class="rz-input form-control" @bind-Value="request.TerrainScore" min="1" max="5" />
+        <ValidationMessage For="@(() => request.TerrainScore)" class="rz-validation-message text-danger" />
+    </div>
+
+    <div class="rz-form-group mb-3">
+        <label for="imageUrl" class="rz-label">Image URL</label>
+        <InputText id="imageUrl" class="rz-input form-control" @bind-Value="request.ImageUrl" />
+        <ValidationMessage For="@(() => request.ImageUrl)" class="rz-validation-message text-danger" />
+    </div>
+
+    <button type="submit" class="rz-button btn btn-primary">Create</button>
+    <button type="button" class="rz-button btn btn-secondary" @onclick="Cancel">Cancel</button>
+</EditForm>
+
+@code {
+    private CreatePlaceOfInterestApiRequestDto request;
+
+    private async Task HandleValidSubmit()
+    {
+        try
+        {
+            request.PublicUniqueToken = Guid.NewGuid().ToString();
+            var result = await ApiClient.CreateAsync(request);
+            if (result)
+            {
+                NavigationManager.NavigateTo("/placeofinterest");
+            }
+        }
+        catch (Exception ex)
+        {
+            await JSRuntime.InvokeVoidAsync("alert", $"Error creating place of interest: {ex.Message}");
+        }
+    }
+
+    private async Task GetLocation(string inputId)
+    {
+        try
+        {
+            var location = await JSRuntime.InvokeAsync<LocationResult>("getCurrentPosition");
+            if (inputId == "startLocation")
+                request.StartLocation = $"{location.Latitude},{location.Longitude}";
+            else if (inputId == "endLocation")
+                request.EndLocation = $"{location.Latitude},{location.Longitude}";
+        }
+        catch (Exception ex)
+        {
+            await JSRuntime.InvokeVoidAsync("alert", $"Error getting location: {ex.Message}");
+        }
+    }
+
+    private void Cancel()
+    {
+        NavigationManager.NavigateTo("/placeofinterest");
+    }
+
+    private class LocationResult
+    {
+        public double Latitude { get; set; }
+        public double Longitude { get; set; }
+    }
+}

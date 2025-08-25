@@ -47,7 +47,7 @@
 
     protected override async Task OnInitializedAsync()
     {
-        var placeOfInterest = await Repository.GetByIdAsync(Id, e => e.StartLocation, e => e.EndLocation);
+        var placeOfInterest = await Repository.GetById(Id, e => e.StartLocation, e => e.EndLocation);
         UpdatePlaceOfInterestRequest = placeOfInterest.ToUpdateRequest();
         EditContext = new EditContext(UpdatePlaceOfInterestRequest);
     }

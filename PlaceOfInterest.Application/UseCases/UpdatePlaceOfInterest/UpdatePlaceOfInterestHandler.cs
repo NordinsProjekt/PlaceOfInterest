@@ -19,7 +19,7 @@ public class UpdatePlaceOfInterestHandler(
         if (!validatorResult.IsValid)
             throw new ValidationException(GetType().Name, validatorResult.Errors);
 
-        var placeOfInterest = await repository.GetByIdAsync(request.Id, e => e.StartLocation, e => e.EndLocation);
+        var placeOfInterest = await repository.GetById(request.Id, e => e.StartLocation, e => e.EndLocation);
 
         await placeOfInterest.UpdateEntity(request, startRepository, endRepository);
 

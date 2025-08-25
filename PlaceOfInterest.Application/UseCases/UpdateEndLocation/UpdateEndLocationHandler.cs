@@ -15,7 +15,7 @@ public class UpdateEndLocationHandler(UpdateEndLocationValidator validator, IRep
         if (!validatorResult.IsValid)
             throw new ValidationException(GetType().Name, validatorResult.Errors);
 
-        var startLocationEntity = await repository.GetByIdAsync(request.Id);
+        var startLocationEntity = await repository.GetById(request.Id);
         startLocationEntity.UpdateEntity(request);
 
         await repository.UpdateAsync(startLocationEntity);

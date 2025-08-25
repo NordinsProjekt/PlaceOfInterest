@@ -48,7 +48,7 @@
 
     protected override async Task OnInitializedAsync()
     {
-        var endLocation = await Repository.GetByIdAsync(Id);
+        var endLocation = await Repository.GetById(Id);
         UpdateEndLocationRequest = endLocation.ToUpdateRequest();
 
         EditContext = new EditContext(UpdateEndLocationRequest);

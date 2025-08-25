@@ -14,7 +14,7 @@ public class UpdateEndLocationFormTests : TestContext
     {
         var mediatorMock = Substitute.For<IMediator>();
         var repositoryMock = Substitute.For<IRepository<Domain.EndLocation>>();
-        repositoryMock.GetByIdAsync(Guid.Empty).ReturnsForAnyArgs(new Domain.EndLocation { Id = Guid.NewGuid() });
+        repositoryMock.GetById(Guid.Empty).ReturnsForAnyArgs(new Domain.EndLocation { Id = Guid.NewGuid() });
 
         Services.AddSingleton(mediatorMock);
         Services.AddSingleton(repositoryMock);
