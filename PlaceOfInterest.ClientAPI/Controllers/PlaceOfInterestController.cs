@@ -1,10 +1,10 @@
+using Contracts.Models.Dto;
+using Contracts.Models.Requests;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using PlaceOfInterest.Application.Interfaces;
-using PlaceOfInterest.Application.UseCases.CreatePlaceOfInterest;
 using PlaceOfInterest.Application.UseCases.DeletePlaceOfInterest;
 using PlaceOfInterest.Application.UseCases.UpdatePlaceOfInterest;
-using PlaceOfInterest.ClientAPI.Dtos;
 using PlaceOfInterest.ClientAPI.Extensions;
 
 namespace PlaceOfInterest.ClientAPI.Controllers;
@@ -31,11 +31,11 @@ public class PlaceOfInterestController(
     }
 
     [HttpGet("{id:guid}")]
-    public async Task<ActionResult<PlaceOfInterestApiDto>> Get(Guid id)
+    public ActionResult<PlaceOfInterestApiDto> Get(Guid id)
     {
         try
         {
-            var poi = await repository.GetById(id, x => x.StartLocation, x => x.EndLocation);
+            var poi = repository.GetById(id, x => x.StartLocation, x => x.EndLocation);
             if (poi == null)
                 return NotFound();
             return Ok(poi.ToApiDto());
@@ -47,7 +47,7 @@ public class PlaceOfInterestController(
     }
 
     [HttpPost]
-    public async Task<ActionResult<bool>> Post([FromBody] CreatePlaceOfInterestRequest request)
+    public async Task<ActionResult<bool>> Post([FromBody] CreatePlaceOfInterestApiRequestDto request)
     {
         try
         {

@@ -1,4 +1,4 @@
-﻿using PlaceOfInterest.ClientAPI.Dtos;
+﻿using Contracts.Models.Dto;
 
 namespace MVC.Models.PlaceOfInterest;
 

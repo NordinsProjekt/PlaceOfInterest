@@ -1,4 +1,4 @@
-﻿using PlaceOfInterest.ClientAPI.Dtos;
+﻿using Contracts.Models.Dto;
 using PlaceOfInterest.Domain;
 
 namespace PlaceOfInterest.ClientAPI.Extensions;

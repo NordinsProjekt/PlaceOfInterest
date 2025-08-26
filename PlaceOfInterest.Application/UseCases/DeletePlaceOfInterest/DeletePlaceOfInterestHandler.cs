@@ -16,9 +16,9 @@ public class DeletePlaceOfInterestHandler(
         if (!validatorResult.IsValid)
             throw new ValidationException(GetType().Name, validatorResult.Errors);
 
-        var placeOfInterest = await repository.GetById(request.Id);
+        var placeOfInterest = repository.GetById(request.Id);
 
-        await repository.DeleteAsync(placeOfInterest);
+        repository.Delete(placeOfInterest);
         await repository.SaveChangesAsync();
 
         return true;

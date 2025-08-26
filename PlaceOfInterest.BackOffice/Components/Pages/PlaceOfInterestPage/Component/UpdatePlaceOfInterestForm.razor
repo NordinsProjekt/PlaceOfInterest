@@ -45,9 +45,9 @@
     private EditContext EditContext { get; set; }
 
 
-    protected override async Task OnInitializedAsync()
+    protected override void OnInitialized()
     {
-        var placeOfInterest = await Repository.GetById(Id, e => e.StartLocation, e => e.EndLocation);
+        var placeOfInterest = Repository.GetById(Id, e => e.StartLocation, e => e.EndLocation);
         UpdatePlaceOfInterestRequest = placeOfInterest.ToUpdateRequest();
         EditContext = new EditContext(UpdatePlaceOfInterestRequest);
     }

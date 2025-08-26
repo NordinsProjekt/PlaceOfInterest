@@ -1,6 +1,6 @@
 using System.Net.Http.Json;
-using Contracts.ApiDtos.Requests;
 using Contracts.Models.Dto;
+using Contracts.Models.Requests;
 
 namespace ClientWebassembly.Services;
 

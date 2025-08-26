@@ -1,9 +1,7 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Contracts.Models.Dto;
+using Microsoft.AspNetCore.Mvc;
 using MVC.Models.PlaceOfInterest;
 using PlaceOfInterest.Application.UseCases.CreatePlaceOfInterest;
-using PlaceOfInterest.ClientAPI.Dtos;
-using System.Net.Http;
-using System.Net.Http.Json;
 
 namespace MVC.Controllers.PlaceOfInterest;
 public class PlaceOfInterestController : Controller

@@ -13,6 +13,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Contracts\Contracts.csproj" />
+    <ProjectReference Include="..\PlaceOfInterest.GoogleMaps\PlaceOfInterest.GoogleMaps.csproj" />
   </ItemGroup>
 
 </Project>

@@ -1,10 +1,11 @@
-﻿using MediatR;
+﻿using Contracts.ApiDtos.Requests;
+using Contracts.Models.Dto;
+using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using PlaceOfInterest.Application.Interfaces;
 using PlaceOfInterest.Application.UseCases.CreateStartLocation;
 using PlaceOfInterest.Application.UseCases.DeleteStartLocation;
 using PlaceOfInterest.Application.UseCases.UpdateStartLocation;
-using PlaceOfInterest.ClientAPI.Dtos;
 using PlaceOfInterest.ClientAPI.Extensions;
 using PlaceOfInterest.Domain;
 
@@ -15,7 +16,7 @@ namespace PlaceOfInterest.ClientAPI.Controllers;
 public class StartLocationController(IMediator mediator, IRepository<StartLocation> repository) : ControllerBase
 {
     [HttpGet]
-    public ActionResult<IEnumerable<StartLocationApiDto>> Get([FromQuery] StartLocationApiRequest request)
+    public ActionResult<IEnumerable<StartLocationApiDto>> Get([FromQuery] StartLocationApiRequestDto request)
     {
         try
         {
@@ -38,10 +39,7 @@ public class StartLocationController(IMediator mediator, IRepository<StartLocati
     {
         try
         {
-            var startLocation = await repository.GetById(id);
-            if (startLocation == null)
-                return NotFound();
-
+            var startLocation = repository.GetById(id);
             return Ok(startLocation.ToApiDto());
         }
         catch (Exception ex)

@@ -33,9 +33,7 @@ public class EndLocationController(IMediator mediator, IRepository<EndLocation> 
     {
         try
         {
-            var endLocation = await repository.GetById(id);
-            if (endLocation == null)
-                return NotFound();
+            var endLocation = repository.GetById(id);
             return Ok(endLocation.ToApiDto());
         }
         catch (Exception ex)

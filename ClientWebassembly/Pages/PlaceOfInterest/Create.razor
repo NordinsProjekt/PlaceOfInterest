@@ -2,6 +2,7 @@
 @using Contracts.ApiDtos.Requests
 @using Contracts.Models.Dto
 @using ClientWebassembly.Services
+@using Contracts.Models.Requests
 @inject PlaceOfInterestApiClient ApiClient
 @inject NavigationManager NavigationManager
 @inject IJSRuntime JSRuntime
@@ -31,7 +32,7 @@
         <label for="startLocation" class="rz-label">Start Location</label>
         <div class="input-group">
             <InputText id="startLocation" class="rz-input form-control" @bind-Value="request.StartLocation" />
-            <button type="button" class="rz-button btn btn-outline-secondary" @onclick="() => GetLocation('startLocation')">Get GPS</button>
+            <button type="button" class="rz-button btn btn-outline-secondary" @onclick="@(() => GetLocation("startLocation"))">Get GPS</button>
         </div>
         <ValidationMessage For="@(() => request.StartLocation)" class="rz-validation-message text-danger" />
     </div>
@@ -40,7 +41,7 @@
         <label for="endLocation" class="rz-label">End Location</label>
         <div class="input-group">
             <InputText id="endLocation" class="rz-input form-control" @bind-Value="request.EndLocation" />
-            <button type="button" class="rz-button btn btn-outline-secondary" @onclick="() => GetLocation('endLocation')">Get GPS</button>
+            <button type="button" class="rz-button btn btn-outline-secondary" @onclick="@(() => GetLocation("endLocation"))">Get GPS</button>
         </div>
         <ValidationMessage For="@(() => request.EndLocation)" class="rz-validation-message text-danger" />
     </div>
@@ -68,7 +69,6 @@
     {
         try
         {
-            request.PublicUniqueToken = Guid.NewGuid().ToString();
             var result = await ApiClient.CreateAsync(request);
             if (result)
             {

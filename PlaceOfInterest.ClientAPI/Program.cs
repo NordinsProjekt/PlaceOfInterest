@@ -1,35 +1,35 @@
+using System.Reflection;
 using FluentValidation;
 using MediatR;
 using MediatRCore.Behaviors;
 using Microsoft.EntityFrameworkCore;
 using PlaceOfInterest.Application.Interfaces;
-using PlaceOfInterest.Application.UseCases.CreateEndLocation;
 using PlaceOfInterest.Application.UseCases.CreatePlaceOfInterest;
-using PlaceOfInterest.Application.UseCases.CreateStartLocation;
-using PlaceOfInterest.Application.UseCases.DeleteEndLocation;
-using PlaceOfInterest.Application.UseCases.DeleteStartLocation;
-using PlaceOfInterest.Application.UseCases.UpdatePlaceOfInterest;
-using PlaceOfInterest.Application.UseCases.UpdateStartLocation;
 using PlaceOfInterest.EFCore;
 using PlaceOfInterest.EFCore.Extensions;
-using System.Reflection;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// Add services to the container.
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("AllowBlazorClient", policy =>
+    {
+        policy.WithOrigins("https://localhost:7240", "http://localhost:7240")
+            .AllowAnyHeader()
+            .AllowAnyMethod()
+            .AllowCredentials();
+    });
+});
 
 builder.Services.AddControllers();
-// Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
 builder.Services.AddOpenApi();
 
 var connectionString = builder.Configuration.GetConnectionString("DefaultConnection") ??
                        throw new InvalidOperationException("Connection string 'DefaultConnection' not found.");
 
 builder.Services.AddDbContext<PlaceOfInterestContext>(options =>
-    options.UseSqlServer(
-        builder.Configuration.GetConnectionString("DefaultConnection")));
+    options.UseSqlServer(connectionString));
 
-// Register MediatR handlers
 builder.Services.AddMediatR(cfg =>
     cfg.RegisterServicesFromAssembly(Assembly.Load("PlaceOfInterest.Application")));
 
@@ -47,6 +47,8 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
+
+app.UseCors("AllowBlazorClient");
 
 app.UseAuthorization();
 

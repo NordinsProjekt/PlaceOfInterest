@@ -16,9 +16,9 @@ public class DeleteStartLocationHandler(DeleteStartLocationValidator validator, 
         if (!validatorResult.IsValid)
             throw new ValidationException(GetType().Name, validatorResult.Errors);
 
-        var startLocationEntity = await repository.GetById(request.Id);
+        var startLocationEntity = repository.GetById(request.Id);
 
-        await repository.DeleteAsync(startLocationEntity);
+        repository.Delete(startLocationEntity);
         await repository.SaveChangesAsync();
 
         return true;

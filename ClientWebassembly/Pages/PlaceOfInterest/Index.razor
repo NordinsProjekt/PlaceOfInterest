@@ -1,5 +1,6 @@
 @page "/placeofinterest"
 @using ClientWebassembly.Services
+@using Contracts.Models.Dto
 @inject PlaceOfInterestApiClient ApiClient
 @inject NavigationManager NavigationManager
 
@@ -56,7 +57,7 @@ else
 }
 
 @code {
-    private List<PlaceOfInterestApiDto>? places;
+    private List<PlaceOfInterestApiDto> places = [];
 
     protected override async Task OnInitializedAsync()
     {
