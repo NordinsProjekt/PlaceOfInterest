@@ -1,6 +1,6 @@
 ﻿namespace Contracts.Models.Requests;
 
-public class CreatePlaceOfInterestApiRequestDto()
+public class CreatePlaceOfInterestApiRequestDto
 {
     public string Name { get; set; } = "";
     public string Description { get; set; } = "";
@@ -9,4 +9,3 @@ public class CreatePlaceOfInterestApiRequestDto()
     public string ImageUrl { get; set; } = "";
     public int TerrainScore { get; set; }
 }
-
