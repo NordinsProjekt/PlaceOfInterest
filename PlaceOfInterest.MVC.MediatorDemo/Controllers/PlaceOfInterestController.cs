@@ -6,7 +6,7 @@ using Contacts = Contracts.Models.Requests;
 
 namespace PlaceOfInterest.MVC.MediatorDemo.Controllers;
 
-public class PlaceOfInterestController(PlaceOfInterestContext db, PlaceOfInterestService service) : Controller
+public class PlaceOfInterestController(PlaceOfInterestContext db) : Controller
 {
     public async Task<IActionResult> Index()
     {
@@ -29,7 +29,7 @@ public class PlaceOfInterestController(PlaceOfInterestContext db, PlaceOfInteres
         if (!ModelState.IsValid)
             return View(model);
 
-        var result = await service.CreateAsync(model);
+        
         if (result) return RedirectToAction(nameof(Index));
 
         ModelState.AddModelError("", "Failed to create place of interest.");

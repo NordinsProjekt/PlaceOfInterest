@@ -13,7 +13,8 @@ public static class CreatePlaceOfInterestApiRequestDtoExtensions
             Description = dto.Description,
             StartLocation = dto.StartLocation,
             EndLocation = dto.EndLocation,
-            ImageUrl = dto.ImageUrl
+            ImageUrl = dto.ImageUrl,
+            TerrainScore = (byte)dto.TerrainScore
         };
     }
 }

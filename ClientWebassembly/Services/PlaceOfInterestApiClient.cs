@@ -23,9 +23,10 @@ public class PlaceOfInterestApiClient
         return await _httpClient.GetFromJsonAsync<PlaceOfInterestApiDto>($"api/PlaceOfInterest/{id}");
     }
 
-    public async Task<bool> CreateAsync(CreatePlaceOfInterestApiRequestDto request)
+    public async Task<string?> CreateAsync(CreatePlaceOfInterestApiRequestDto request)
     {
         var response = await _httpClient.PostAsJsonAsync("api/PlaceOfInterest", request);
-        return response.IsSuccessStatusCode;
+        if (!response.IsSuccessStatusCode) return null;
+        return await response.Content.ReadFromJsonAsync<string>();
     }
 }

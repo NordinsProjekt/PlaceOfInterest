@@ -1,8 +1,9 @@
-using System.Reflection;
-using Contracts.Models.Requests;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
+using PlaceOfInterest.Application.UseCases.CreatePlaceOfInterest;
 using PlaceOfInterest.EFCore;
+using System.Reflection;
+using ContractsReq = Contracts.Models.Requests;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -36,5 +37,17 @@ app.Run();
 
 public class PlaceOfInterestService(IMediator mediator)
 {
-    public Task<bool> CreateAsync(CreatePlaceOfInterestApiRequestDto dto) => mediator.Send(dto);
+    public Task<bool> CreateAsync(ContractsReq.CreatePlaceOfInterestApiRequestDto dto)
+    {
+        var req = new CreatePlaceOfInterestRequest
+        {
+            Name = dto.Name,
+            Description = dto.Description,
+            ImageUrl = dto.ImageUrl,
+            TerrainScore = (byte)dto.TerrainScore,
+            StartLocation = dto.StartLocation,
+            EndLocation = dto.EndLocation
+        };
+        return mediator.Send(req);
+    }
 }

@@ -47,12 +47,12 @@ public class PlaceOfInterestController(
     }
 
     [HttpPost]
-    public async Task<ActionResult<bool>> Post([FromBody] CreatePlaceOfInterestApiRequestDto request)
+    public async Task<ActionResult<string>> Post([FromBody] CreatePlaceOfInterestApiRequestDto request)
     {
         try
         {
-            var result = await mediator.Send(request);
-            return Ok(result);
+            var token = await mediator.Send(request.ToRequest());
+            return Ok(token);
         }
         catch (Exception ex)
         {

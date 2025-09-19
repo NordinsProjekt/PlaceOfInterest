@@ -2,7 +2,7 @@
 
 namespace PlaceOfInterest.Application.UseCases.CreatePlaceOfInterest;
 
-public class CreatePlaceOfInterestRequest : IRequest<bool>
+public class CreatePlaceOfInterestRequest : IRequest<string>
 {
     public string Name { get; set; } = "";
     public string Description { get; set; } = "";

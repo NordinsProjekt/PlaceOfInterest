@@ -1,5 +1,7 @@
 @page "/placeofinterest/create"
 @using Contracts.Models.Requests
+@using Microsoft.AspNetCore.Components.Forms
+@using System.Text.Json
 @inject PlaceOfInterestApiClient ApiClient
 @inject NavigationManager NavigationManager
 @inject IJSRuntime JSRuntime
@@ -10,7 +12,24 @@
     Please note: Your place must be verified by an admin before it will be visible to others.
 </div>
 
-<EditForm Model="@request" OnValidSubmit="HandleValidSubmit" class="rz-form">
+@if (!string.IsNullOrWhiteSpace(createdToken))
+{
+    <div class="alert alert-success">
+        Thank you for your contribution! Your token is: <strong>@createdToken</strong>
+    </div>
+}
+
+<div class="mb-3 d-flex gap-2">
+    <button class="btn btn-outline-secondary btn-sm" @onclick="SaveDraftAsync">Save draft</button>
+    <button class="btn btn-outline-secondary btn-sm" @onclick="LoadDraftAsync">Load draft</button>
+    <button class="btn btn-outline-danger btn-sm" @onclick="ClearDraftAsync">Clear draft</button>
+    @if (lastSavedAt is not null)
+    {
+        <span class="text-muted small">Last saved: @lastSavedAt</span>
+    }
+</div>
+
+<EditForm EditContext="@editContext" OnValidSubmit="HandleValidSubmit" class="rz-form">
     <DataAnnotationsValidator />
 
     <div class="rz-form-group mb-3">
@@ -60,21 +79,150 @@
 </EditForm>
 
 @code {
-    private CreatePlaceOfInterestApiRequestDto request;
+    private const string DraftKey = "poi:create:draft";
+    private const string ContributionsKey = "poi:contributions";
+    private CreatePlaceOfInterestApiRequestDto request = new();
+    private EditContext? editContext;
+    private string? lastSavedAt;
+    private string? createdToken;
+
+    protected override void OnInitialized()
+    {
+        request = new();
+        editContext = new EditContext(request);
+        editContext.OnFieldChanged += EditContext_OnFieldChanged;
+    }
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender)
+        {
+            await LoadDraftAsync();
+        }
+    }
+
+    private async void EditContext_OnFieldChanged(object? sender, FieldChangedEventArgs e)
+    {
+        try { await SaveDraftAsync(); } catch { }
+    }
+
+    private async Task SaveDraftAsync()
+    {
+        var json = JsonSerializer.Serialize(request);
+        await JSRuntime.InvokeVoidAsync("storage.set", DraftKey, json);
+        lastSavedAt = DateTime.Now.ToString("HH:mm:ss");
+        StateHasChanged();
+    }
+
+    private async Task<bool> TryLoadDraftAsync()
+    {
+        var json = await JSRuntime.InvokeAsync<string?>("storage.get", DraftKey);
+        if (!string.IsNullOrWhiteSpace(json))
+        {
+            try
+            {
+                var draft = JsonSerializer.Deserialize<CreatePlaceOfInterestApiRequestDto>(json!);
+                if (draft is not null)
+                {
+                    request = draft;
+                    editContext = new EditContext(request);
+                    editContext.OnFieldChanged += EditContext_OnFieldChanged;
+                    StateHasChanged();
+                    return true;
+                }
+            }
+            catch { }
+        }
+        return false;
+    }
+
+    private async Task LoadDraftAsync()
+    {
+        var loaded = await TryLoadDraftAsync();
+        if (loaded)
+        {
+            lastSavedAt = "loaded";
+        }
+    }
+
+    private async Task ClearDraftAsync()
+    {
+        await JSRuntime.InvokeVoidAsync("storage.remove", DraftKey);
+        lastSavedAt = null;
+    }
 
     private async Task HandleValidSubmit()
     {
         try
         {
-            var result = await ApiClient.CreateAsync(request);
-            if (result)
+            var token = await ApiClient.CreateAsync(request);
+            if (!string.IsNullOrWhiteSpace(token))
             {
-                NavigationManager.NavigateTo("/placeofinterest");
+                createdToken = token;
+                await RemoveDraftIfMatchesAsync(request);
+                await AddContributionAsync(token!, request.Name);
+                StateHasChanged();
             }
         }
         catch (Exception ex)
         {
             await JSRuntime.InvokeVoidAsync("alert", $"Error creating place of interest: {ex.Message}");
+        }
+    }
+
+    private class ContributionEntry
+    {
+        public string Token { get; set; } = string.Empty;
+        public string? Name { get; set; }
+    }
+
+    private async Task AddContributionAsync(string token, string name)
+    {
+        var existingJson = await JSRuntime.InvokeAsync<string?>("storage.get", ContributionsKey);
+        List<ContributionEntry> entries = new();
+        var options = new JsonSerializerOptions { PropertyNameCaseInsensitive = true };
+
+        if (!string.IsNullOrWhiteSpace(existingJson))
+        {
+            // Try parse as entries
+            try
+            {
+                var parsed = JsonSerializer.Deserialize<List<ContributionEntry>>(existingJson!, options);
+                if (parsed is not null) entries = parsed;
+            }
+            catch
+            {
+                // Backward compatibility: was List<string>
+                try
+                {
+                    var tokens = JsonSerializer.Deserialize<List<string>>(existingJson!) ?? new();
+                    entries = tokens.Select(t => new ContributionEntry { Token = t }).ToList();
+                }
+                catch { }
+            }
+        }
+
+        if (!entries.Any(e => string.Equals(e.Token, token, StringComparison.OrdinalIgnoreCase)))
+        {
+            entries.Add(new ContributionEntry { Token = token, Name = name });
+        }
+        else
+        {
+            // Update name if previously missing
+            var existing = entries.First(e => string.Equals(e.Token, token, StringComparison.OrdinalIgnoreCase));
+            if (string.IsNullOrWhiteSpace(existing.Name)) existing.Name = name;
+        }
+
+        await JSRuntime.InvokeVoidAsync("storage.set", ContributionsKey, JsonSerializer.Serialize(entries));
+    }
+
+    private async Task RemoveDraftIfMatchesAsync(CreatePlaceOfInterestApiRequestDto current)
+    {
+        var currentJson = JsonSerializer.Serialize(current);
+        var storedJson = await JSRuntime.InvokeAsync<string?>("storage.get", DraftKey);
+        if (!string.IsNullOrWhiteSpace(storedJson) && string.Equals(storedJson, currentJson, StringComparison.Ordinal))
+        {
+            await JSRuntime.InvokeVoidAsync("storage.remove", DraftKey);
         }
     }
 
@@ -87,6 +235,8 @@
                 request.StartLocation = $"{location.Latitude},{location.Longitude}";
             else if (inputId == "endLocation")
                 request.EndLocation = $"{location.Latitude},{location.Longitude}";
+
+            await SaveDraftAsync();
         }
         catch (Exception ex)
         {
@@ -97,6 +247,14 @@
     private void Cancel()
     {
         NavigationManager.NavigateTo("/placeofinterest");
+    }
+
+    public void Dispose()
+    {
+        if (editContext is not null)
+        {
+            editContext.OnFieldChanged -= EditContext_OnFieldChanged;
+        }
     }
 
     private class LocationResult

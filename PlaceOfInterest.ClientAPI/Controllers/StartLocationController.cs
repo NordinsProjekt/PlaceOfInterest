@@ -1,5 +1,5 @@
-﻿using Contracts.ApiDtos.Requests;
-using Contracts.Models.Dto;
+﻿using Contracts.Models.Dto;
+using Contracts.Models.Requests;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using PlaceOfInterest.Application.Interfaces;

@@ -1,6 +1,5 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using PlaceOfInterest.Domain;
 using PlaceOfInterest.EFCore;
 
 namespace PlaceOfInterest.MVC.DbContextDemo.Controllers;
@@ -29,11 +28,13 @@ public class PlaceOfInterestController(PlaceOfInterestContext db) : Controller
             ModelState.AddModelError("name", "Name is required");
             return View();
         }
-        db.PlaceOfInterests.Add(new PlaceOfInterest
+        db.PlaceOfInterests.Add(new PlaceOfInterest.Domain.PlaceOfInterest
         {
             Id = Guid.NewGuid(),
             Name = name,
-            Description = description
+            Description = description,
+            StartLocation = new PlaceOfInterest.Domain.StartLocation { Id = Guid.NewGuid(), Name = "Temp Start" },
+            EndLocation = new PlaceOfInterest.Domain.EndLocation { Id = Guid.NewGuid(), Name = "Temp End" }
         });
         await db.SaveChangesAsync();
         return RedirectToAction(nameof(Index));
