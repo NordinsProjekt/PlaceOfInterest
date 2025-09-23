@@ -2,6 +2,7 @@
 @using Contracts.Models.Requests
 @using Microsoft.AspNetCore.Components.Forms
 @using System.Text.Json
+@using ClientWebassembly.Components
 @inject PlaceOfInterestApiClient ApiClient
 @inject NavigationManager NavigationManager
 @inject IJSRuntime JSRuntime
@@ -48,7 +49,9 @@
         <label for="startLocation" class="rz-label">Start Location</label>
         <div class="input-group">
             <InputText id="startLocation" class="rz-input form-control" @bind-Value="request.StartLocation" />
-            <button type="button" class="rz-button btn btn-outline-secondary" @onclick="@(() => GetLocation("startLocation"))">Get GPS</button>
+            <button type="button" class="rz-button btn btn-outline-secondary" disabled="@isGettingStartLocation" @onclick="@(() => GetLocation("startLocation"))">
+				<LoadingComponent IsLoading="isGettingStartLocation" LoadingMessage="Getting location......" NotLoadingMessage="Get location"/>
+            </button>
         </div>
         <ValidationMessage For="@(() => request.StartLocation)" class="rz-validation-message text-danger" />
     </div>
@@ -57,7 +60,9 @@
         <label for="endLocation" class="rz-label">End Location</label>
         <div class="input-group">
             <InputText id="endLocation" class="rz-input form-control" @bind-Value="request.EndLocation" />
-            <button type="button" class="rz-button btn btn-outline-secondary" @onclick="@(() => GetLocation("endLocation"))">Get GPS</button>
+            <button type="button" class="rz-button btn btn-outline-secondary" disabled="@isGettingEndLocation" @onclick="@(() => GetLocation("endLocation"))">
+                <LoadingComponent IsLoading="isGettingEndLocation" LoadingMessage="Getting location......" NotLoadingMessage="Get location" />
+            </button>
         </div>
         <ValidationMessage For="@(() => request.EndLocation)" class="rz-validation-message text-danger" />
     </div>
@@ -74,8 +79,10 @@
         <ValidationMessage For="@(() => request.ImageUrl)" class="rz-validation-message text-danger" />
     </div>
 
-    <button type="submit" class="rz-button btn btn-primary">Create</button>
-    <button type="button" class="rz-button btn btn-secondary" @onclick="Cancel">Cancel</button>
+    <button type="submit" class="rz-button btn btn-primary" disabled="@isSubmitting">
+		<LoadingComponent IsLoading="isSubmitting" LoadingMessage="Submitting...." NotLoadingMessage="Create"/>
+    </button>
+    <button type="button" class="rz-button btn btn-secondary" @onclick="Cancel" disabled="@isSubmitting">Cancel</button>
 </EditForm>
 
 @code {
@@ -85,6 +92,9 @@
     private EditContext? editContext;
     private string? lastSavedAt;
     private string? createdToken;
+    private bool isGettingStartLocation;
+    private bool isGettingEndLocation;
+    private bool isSubmitting;
 
     protected override void OnInitialized()
     {
@@ -153,6 +163,8 @@
 
     private async Task HandleValidSubmit()
     {
+        isSubmitting = true;
+        StateHasChanged();
         try
         {
             var token = await ApiClient.CreateAsync(request);
@@ -167,6 +179,11 @@
         catch (Exception ex)
         {
             await JSRuntime.InvokeVoidAsync("alert", $"Error creating place of interest: {ex.Message}");
+        }
+        finally
+        {
+            isSubmitting = false;
+            StateHasChanged();
         }
     }
 
@@ -184,7 +201,6 @@
 
         if (!string.IsNullOrWhiteSpace(existingJson))
         {
-            // Try parse as entries
             try
             {
                 var parsed = JsonSerializer.Deserialize<List<ContributionEntry>>(existingJson!, options);
@@ -192,7 +208,6 @@
             }
             catch
             {
-                // Backward compatibility: was List<string>
                 try
                 {
                     var tokens = JsonSerializer.Deserialize<List<string>>(existingJson!) ?? new();
@@ -208,7 +223,6 @@
         }
         else
         {
-            // Update name if previously missing
             var existing = entries.First(e => string.Equals(e.Token, token, StringComparison.OrdinalIgnoreCase));
             if (string.IsNullOrWhiteSpace(existing.Name)) existing.Name = name;
         }
@@ -230,6 +244,9 @@
     {
         try
         {
+            if (inputId == "startLocation") isGettingStartLocation = true; else if (inputId == "endLocation") isGettingEndLocation = true;
+            StateHasChanged();
+
             var location = await JSRuntime.InvokeAsync<LocationResult>("getCurrentPosition");
             if (inputId == "startLocation")
                 request.StartLocation = $"{location.Latitude},{location.Longitude}";
@@ -241,6 +258,11 @@
         catch (Exception ex)
         {
             await JSRuntime.InvokeVoidAsync("alert", $"Error getting location: {ex.Message}");
+        }
+        finally
+        {
+            if (inputId == "startLocation") isGettingStartLocation = false; else if (inputId == "endLocation") isGettingEndLocation = false;
+            StateHasChanged();
         }
     }
 
