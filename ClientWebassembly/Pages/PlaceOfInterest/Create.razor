@@ -167,12 +167,12 @@
         StateHasChanged();
         try
         {
-            var token = await ApiClient.CreateAsync(request);
-            if (!string.IsNullOrWhiteSpace(token))
+            var response = await ApiClient.CreateAsync(request);
+            if (response?.Success ?? false)
             {
-                createdToken = token;
+                createdToken = response.Token;
                 await RemoveDraftIfMatchesAsync(request);
-                await AddContributionAsync(token!, request.Name);
+                await AddContributionAsync(response.Token!, request.Name);
                 StateHasChanged();
             }
         }
