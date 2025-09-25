@@ -24,8 +24,17 @@ public class CreatePlaceOfInterestHandler(
 
         var placeOfInterest = await request.ToDbEntity(startRepository, endRepository);
 
-        await repository.AddAsync(placeOfInterest);
-        await repository.SaveChangesAsync();
+        try
+        {
+            await repository.AddAsync(placeOfInterest);
+            await repository.SaveChangesAsync();
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine(e);
+            throw;
+        }  
+
 
         return request.PublicUniqueToken;
     }

@@ -30,8 +30,8 @@ public class PlaceOfInterestApiClient
 
         if (!response.IsSuccessStatusCode) return new(false, "");
 
-        var token = await response.Content.ReadFromJsonAsync<string>();
-        if (token is not null) return new(true, token);
+        var content = await response.Content.ReadAsStringAsync();
+        if (!string.IsNullOrWhiteSpace(content)) return new(true, content.Trim('"'));
 
         return new(false, "");
     }
