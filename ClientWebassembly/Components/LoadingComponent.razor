@@ -1,10 +1,16 @@
-﻿<span class="spinner-border spinner-border-sm me-1" role="status" aria-hidden="true"></span>
-@CurrentMessage
+﻿@if (IsLoading)
+{
+	<span class="spinner-border spinner-border-sm me-1" role="status" aria-hidden="true"></span>
+	@LoadingMessage
+}
+else
+{
+	@NotLoadingMessage
+}
+
 
 @code {
 	[Parameter] public string? LoadingMessage { get; set; }
 	[Parameter] public string? NotLoadingMessage { get; set; }
 	[Parameter] public bool IsLoading { get; set; }
-
-	private string? CurrentMessage => IsLoading ? LoadingMessage : NotLoadingMessage;
 }

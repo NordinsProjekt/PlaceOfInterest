@@ -1,6 +1,7 @@
 using System.Net.Http.Json;
 using Contracts.Models.Dto;
 using Contracts.Models.Requests;
+using Contracts.Models.Responses;
 
 namespace ClientWebassembly.Services;
 
@@ -23,10 +24,15 @@ public class PlaceOfInterestApiClient
         return await _httpClient.GetFromJsonAsync<PlaceOfInterestApiDto>($"api/PlaceOfInterest/{id}");
     }
 
-    public async Task<string?> CreateAsync(CreatePlaceOfInterestApiRequestDto request)
+    public async Task<CreatePlaceOfInterestResponse> CreateAsync(CreatePlaceOfInterestApiRequestDto request)
     {
         var response = await _httpClient.PostAsJsonAsync("api/PlaceOfInterest", request);
-        if (!response.IsSuccessStatusCode) return null;
-        return await response.Content.ReadFromJsonAsync<string>();
+
+        if (!response.IsSuccessStatusCode) return new(false, "");
+
+        var token = await response.Content.ReadFromJsonAsync<string>();
+        if (token is not null) return new(true, token);
+
+        return new(false, "");
     }
 }
