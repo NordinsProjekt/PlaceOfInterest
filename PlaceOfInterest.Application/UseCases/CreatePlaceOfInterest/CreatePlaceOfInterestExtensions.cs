@@ -55,14 +55,14 @@ public static class CreatePlaceOfInterestExtensions
     private static async Task<StartLocation> GetStartLocationEntity(this CreatePlaceOfInterestRequest request,
         IRepository<StartLocation> repository)
     {
-        var startLocation = await repository.GetByIdAsync(request.StartLocationId);
+        var startLocation = repository.GetById(request.StartLocationId);
         return startLocation ?? throw new InvalidOperationException("Start location not found.");
     }
 
     private static async Task<EndLocation> GetEndLocationEntity(this CreatePlaceOfInterestRequest request,
         IRepository<EndLocation> repository)
     {
-        var endLocation = await repository.GetByIdAsync(request.EndLocationId);
+        var endLocation = repository.GetById(request.EndLocationId);
         return endLocation ?? throw new InvalidOperationException("End location not found.");
     }
 }

@@ -1,10 +1,10 @@
+using Contracts.Models.Dto;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using PlaceOfInterest.Application.Interfaces;
 using PlaceOfInterest.Application.UseCases.CreateEndLocation;
 using PlaceOfInterest.Application.UseCases.DeleteEndLocation;
 using PlaceOfInterest.Application.UseCases.UpdateEndLocation;
-using PlaceOfInterest.ClientAPI.Dtos;
 using PlaceOfInterest.ClientAPI.Extensions;
 using PlaceOfInterest.Domain;
 
@@ -33,9 +33,7 @@ public class EndLocationController(IMediator mediator, IRepository<EndLocation> 
     {
         try
         {
-            var endLocation = await repository.GetByIdAsync(id);
-            if (endLocation == null)
-                return NotFound();
+            var endLocation = repository.GetById(id);
             return Ok(endLocation.ToApiDto());
         }
         catch (Exception ex)

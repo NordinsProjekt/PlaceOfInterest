@@ -15,10 +15,10 @@ public class UpdateStartLocationHandler(UpdateStartLocationValidator validator, 
         if (!validatorResult.IsValid)
             throw new ValidationException(GetType().Name, validatorResult.Errors);
 
-        var startLocationEntity = await repository.GetByIdAsync(request.Id);
+        var startLocationEntity = repository.GetById(request.Id);
         startLocationEntity.UpdateEntity(request);
 
-        await repository.UpdateAsync(startLocationEntity);
+        repository.Update(startLocationEntity);
         await repository.SaveChangesAsync();
 
         return true;

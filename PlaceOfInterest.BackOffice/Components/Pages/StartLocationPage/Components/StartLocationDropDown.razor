@@ -19,7 +19,7 @@
     [Parameter] public Expression<Func<Guid>>? ValueExpression { get; set; }
     public bool Visible => StartLocations.Any();
     private List<DropDownNameIdDto> StartLocations { get; set; } = new();
-    protected override async Task OnInitializedAsync()
+    protected override void OnInitialized()
     {
         StartLocations = Repository.GetVerifiedNameIdStartLocation();
     }

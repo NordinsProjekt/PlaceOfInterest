@@ -1,0 +1,88 @@
+@page "/placeofinterest/create"
+@using PlaceOfInterest.Application.UseCases.CreatePlaceOfInterest
+@using ClientApp.Services
+@using PlaceOfInterest.GoogleMaps
+@using ClientApp.Components
+@inject PlaceOfInterestApiClient ApiClient
+@inject NavigationManager NavigationManager
+
+<h3>Create Place of Interest</h3>               
+
+<div class="row">
+    <div class="col-md-6">
+        <EditForm Model="@request" OnValidSubmit="@HandleValidSubmit">
+            <DataAnnotationsValidator />
+
+            <div class="mb-3">
+                <label for="name" class="form-label">Name</label>
+                <InputText id="name" class="form-control" @bind-Value="request.Name" />
+                <ValidationMessage For="@(() => request.Name)" />
+            </div>
+
+            <div class="mb-3">
+                <label for="description" class="form-label">Description</label>
+                <InputTextArea id="description" class="form-control" @bind-Value="request.Description" rows="3" />
+                <ValidationMessage For="@(() => request.Description)" />
+            </div>
+
+            <LocationInput Label="Start Location"
+                          @bind-Value="request.StartLocation"
+                          OnLocationSelected="HandleStartLocationSelected" />
+
+            <LocationInput Label="End Location"
+                          @bind-Value="request.EndLocation"
+                          OnLocationSelected="HandleEndLocationSelected" />
+
+            <div class="mb-3">
+                <label for="terrainScore" class="form-label">Terrain Score (1-5)</label>
+                <InputNumber id="terrainScore" class="form-control" @bind-Value="request.TerrainScore" min="1" max="5" />
+                <ValidationMessage For="@(() => request.TerrainScore)" />
+            </div>
+
+            <div class="mb-3">
+                <label for="imageUrl" class="form-label">Image URL</label>
+                <InputText id="imageUrl" class="form-control" @bind-Value="request.ImageUrl" />
+                <ValidationMessage For="@(() => request.ImageUrl)" />
+            </div>
+
+            <div class="mb-3">
+                <button type="submit" class="btn btn-primary">Create</button>
+                <button type="button" class="btn btn-secondary" @onclick="NavigateBack">Cancel</button>
+            </div>
+        </EditForm>
+    </div>
+</div>
+
+@code {
+    private CreatePlaceOfInterestRequest request = new();
+    private string errorMessage = "";
+
+    private void HandleStartLocationSelected(LocationResult location)
+    {
+        request.StartLocation = location.FormattedAddress;
+    }
+
+    private void HandleEndLocationSelected(LocationResult location)
+    {
+        request.EndLocation = location.FormattedAddress;
+    }
+
+    private async Task HandleValidSubmit()
+    {
+        var result = await ApiClient.CreateAsync(request);
+        if (result)
+        {
+            NavigateBack();
+        }
+        else
+        {
+            errorMessage = "Failed to create place of interest";
+            StateHasChanged();
+        }
+    }
+
+    private void NavigateBack()
+    {
+        NavigationManager.NavigateTo("/placeofinterest");
+    }
+}

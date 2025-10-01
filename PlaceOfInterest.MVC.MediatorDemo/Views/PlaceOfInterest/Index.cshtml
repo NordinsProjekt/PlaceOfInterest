@@ -1,0 +1,29 @@
+@model IEnumerable<PlaceOfInterest.Domain.PlaceOfInterest>
+@{
+    ViewData["Title"] = "Mediator Demo - Places";
+}
+<h2>@ViewData["Title"]</h2>
+<p>
+    <a class="btn btn-primary" asp-action="Create">Create</a>
+</p>
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <th>Name</th>
+            <th>Description</th>
+            <th>Start</th>
+            <th>End</th>
+        </tr>
+    </thead>
+    <tbody>
+    @foreach (var p in Model)
+    {
+        <tr>
+            <td>@p.Name</td>
+            <td>@p.Description</td>
+            <td>@p.StartLocation?.Name</td>
+            <td>@p.EndLocation?.Name</td>
+        </tr>
+    }
+    </tbody>
+</table>

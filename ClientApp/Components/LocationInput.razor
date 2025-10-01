@@ -1,0 +1,78 @@
+@using PlaceOfInterest.GoogleMaps
+@inject IJSRuntime JSRuntime
+@inject GoogleMapsService GoogleMapsService
+
+<div class="mb-3">
+    <label class="form-label">@Label</label>
+    <div class="input-group">
+        <input type="text" class="form-control" value="@Value" @onchange="HandleLocationChange" placeholder="Enter address or coordinates">
+        <button class="btn btn-outline-secondary" type="button" @onclick="GetCurrentLocation">
+            <i class="bi bi-geo-alt"></i>
+        </button>
+    </div>
+    @if (!string.IsNullOrEmpty(ErrorMessage))
+    {
+        <div class="text-danger">@ErrorMessage</div>
+    }
+</div>
+
+@code {
+    [Parameter] public string Label { get; set; } = "Location";
+    [Parameter] public string Value { get; set; } = "";
+    [Parameter] public EventCallback<string> ValueChanged { get; set; }
+    [Parameter] public EventCallback<LocationResult> OnLocationSelected { get; set; }
+
+    private string ErrorMessage = "";
+
+    private async Task HandleLocationChange(ChangeEventArgs e)
+    {
+        var address = e.Value?.ToString() ?? "";
+        await UpdateValue(address);
+        
+        if (!string.IsNullOrWhiteSpace(address))
+        {
+            var location = await GoogleMapsService.GetLocationFromAddressAsync(address);
+            if (location != null)
+            {
+                await OnLocationSelected.InvokeAsync(location);
+                ErrorMessage = "";
+            }
+            else
+            {
+                ErrorMessage = "Could not find this location";
+            }
+        }
+    }
+
+    private async Task GetCurrentLocation()
+    {
+        try
+        {
+            var location = await JSRuntime.InvokeAsync<GeolocationResult>("getCurrentLocation");
+            var locationInfo = await GoogleMapsService.GetLocationFromCoordinatesAsync(location.Latitude, location.Longitude);
+            
+            if (locationInfo != null)
+            {
+                await UpdateValue(locationInfo.FormattedAddress);
+                await OnLocationSelected.InvokeAsync(locationInfo);
+                ErrorMessage = "";
+            }
+        }
+        catch (Exception ex)
+        {
+            ErrorMessage = "Error getting current location: " + ex.Message;
+        }
+    }
+
+    private async Task UpdateValue(string value)
+    {
+        Value = value;
+        await ValueChanged.InvokeAsync(value);
+    }
+
+    private class GeolocationResult
+    {
+        public double Latitude { get; set; }
+        public double Longitude { get; set; }
+    }
+}

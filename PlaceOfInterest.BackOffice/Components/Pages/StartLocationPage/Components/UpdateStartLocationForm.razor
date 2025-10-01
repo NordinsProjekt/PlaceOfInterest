@@ -46,9 +46,9 @@
     private EditContext EditContext { get; set; }
 
 
-    protected override async Task OnInitializedAsync()
+    protected override void OnInitialized()
     {
-        var startLocation = await Repository.GetByIdAsync(Id);
+        var startLocation = Repository.GetById(Id);
         UpdateStartLocationRequest = startLocation.ToUpdateRequest();
 
         EditContext = new EditContext(UpdateStartLocationRequest);

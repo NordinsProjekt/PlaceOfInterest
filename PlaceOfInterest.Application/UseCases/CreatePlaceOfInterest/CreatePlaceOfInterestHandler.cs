@@ -10,10 +10,11 @@ public class CreatePlaceOfInterestHandler(
     IRepository<Domain.PlaceOfInterest> repository,
     IRepository<StartLocation> startRepository,
     IRepository<EndLocation> endRepository)
-    : IRequestHandler<CreatePlaceOfInterestRequest, bool>
+    : IRequestHandler<CreatePlaceOfInterestRequest, string>
 {
-    public async Task<bool> Handle(CreatePlaceOfInterestRequest request, CancellationToken cancellationToken)
+    public async Task<string> Handle(CreatePlaceOfInterestRequest request, CancellationToken cancellationToken)
     {
+        request.PublicUniqueToken = request.GeneratePublicToken();
         var validatorResult = await validator.ValidateAsync(request, cancellationToken);
 
         if (!validatorResult.IsValid)
@@ -23,9 +24,18 @@ public class CreatePlaceOfInterestHandler(
 
         var placeOfInterest = await request.ToDbEntity(startRepository, endRepository);
 
-        await repository.AddAsync(placeOfInterest);
-        await repository.SaveChangesAsync();
+        try
+        {
+            await repository.AddAsync(placeOfInterest);
+            await repository.SaveChangesAsync();
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine(e);
+            throw;
+        }  
 
-        return true;
+
+        return request.PublicUniqueToken;
     }
 }

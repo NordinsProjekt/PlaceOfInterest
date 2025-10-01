@@ -8,7 +8,7 @@ namespace PlaceOfInterest.EFCore;
 public class Repository<T>(PlaceOfInterestContext context) : IRepository<T>
     where T : class, IEntity
 {
-    public async Task<T> GetByIdAsync(Guid id, params Expression<Func<T, object>>[] includes)
+    public T GetById(Guid id, params Expression<Func<T, object>>[] includes)
     {
         IQueryable<T> query = context.Set<T>();
 
@@ -62,12 +62,12 @@ public class Repository<T>(PlaceOfInterestContext context) : IRepository<T>
         await context.Set<T>().AddAsync(entity);
     }
 
-    public async Task UpdateAsync(T entity)
+    public void Update(T entity)
     {
         context.Set<T>().Update(entity);
     }
 
-    public async Task DeleteAsync(T entity)
+    public void Delete(T entity)
     {
         context.Set<T>().Remove(entity);
     }

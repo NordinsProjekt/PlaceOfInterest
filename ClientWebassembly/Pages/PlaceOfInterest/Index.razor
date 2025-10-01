@@ -1,0 +1,80 @@
+@page "/placeofinterest"
+@using Contracts.Models.Dto
+@inject PlaceOfInterestApiClient ApiClient
+@inject NavigationManager NavigationManager
+
+<div class="d-flex align-items-center justify-content-between mb-3">
+    <h3 class="mb-0">Places of Interest</h3>
+    <button class="rz-button btn btn-primary" @onclick="NavigateToCreate">Create New</button>
+</div>
+
+@if (places == null)
+{
+    <div>Loading...</div>
+}
+else if (!places.Any())
+{
+    <div class="alert alert-info mt-4 text-center">
+        Found no verified places to visit. Please check back later.
+    </div>
+}
+else
+{
+    <div class="container">
+        @foreach (var poi in places)
+        {
+            <div class="rz-card" style="cursor: pointer; margin-bottom: 1rem;" @onclick="() => NavigateToDetails(poi.Id)">
+                <div class="d-flex flex-row align-items-center">
+                    <div>
+                        <h4 class="mb-0">@poi.Name</h4>
+                        <p class="mb-0 text-muted">@poi.Description</p>
+                        <div class="d-flex mt-2">
+                            <div class="me-3">
+                                <small class="text-muted">Terrain Score:</small>
+                                <div>@poi.TerrainScore</div>
+                            </div>
+                            <div>
+                                <small class="text-muted">Score:</small>
+                                <div>@poi.Score</div>
+                            </div>
+                        </div>
+                        <div class="mt-2">
+                            <small class="text-muted">Start Location:</small>
+                            <div>@poi.StartLocation?.Name</div>
+                            <small class="text-muted">End Location:</small>
+                            <div>@poi.EndLocation?.Name</div>
+                        </div>
+                        @if (poi.Verified)
+                        {
+                            <span class="rz-badge rz-badge-success mt-2">Verified</span>
+                        }
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+}
+
+@code {
+    private List<PlaceOfInterestApiDto> places = [];
+
+    protected override async Task OnInitializedAsync()
+    {
+        await LoadPlaces();
+    }
+
+    private async Task LoadPlaces()
+    {
+        places = await ApiClient.GetAllAsync();
+    }
+
+    private void NavigateToCreate()
+    {
+        NavigationManager.NavigateTo("/placeofinterest/create");
+    }
+
+    private void NavigateToDetails(Guid id)
+    {
+        NavigationManager.NavigateTo($"/placeofinterest/{id}");
+    }
+}

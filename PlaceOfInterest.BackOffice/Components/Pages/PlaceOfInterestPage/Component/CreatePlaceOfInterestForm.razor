@@ -42,7 +42,6 @@
 
     protected override void OnInitialized()
     {
-        CreatePlaceOfInterestRequest.PublicUniqueToken = CreatePlaceOfInterestRequest.GeneratePublicToken();
         EditContext = new EditContext(CreatePlaceOfInterestRequest);
     }
 
@@ -51,5 +50,4 @@
         await Mediator.Send(CreatePlaceOfInterestRequest);
         await DialogService.CloseSideAsync();
     }
-
 }

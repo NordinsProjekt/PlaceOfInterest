@@ -14,7 +14,7 @@ public class UpdateStartLocationFormTests : TestContext
     {
         var mediatorMock = Substitute.For<IMediator>();
         var repositoryMock = Substitute.For<IRepository<Domain.StartLocation>>();
-        repositoryMock.GetByIdAsync(Guid.Empty).ReturnsForAnyArgs(new Domain.StartLocation { Id = Guid.NewGuid() });
+        repositoryMock.GetById(Guid.Empty).ReturnsForAnyArgs(new Domain.StartLocation { Id = Guid.NewGuid() });
 
         Services.AddSingleton(mediatorMock);
         Services.AddSingleton(repositoryMock);

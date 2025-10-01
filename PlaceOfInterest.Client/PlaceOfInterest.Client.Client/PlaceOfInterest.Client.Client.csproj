@@ -12,4 +12,9 @@
     <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly" Version="9.0.6" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\..\PlaceOfInterest.Application\PlaceOfInterest.Application.csproj" />
+    <ProjectReference Include="..\..\PlaceOfInterest.ClientAPI\PlaceOfInterest.ClientAPI.csproj" />
+  </ItemGroup>
+
 </Project>

@@ -1,34 +1,26 @@
-using PlaceOfInterest.Client.Client.Pages;
+using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
 using PlaceOfInterest.Client.Components;
+using PlaceOfInterest.Client.Services;
+using PlaceOfInterest.GoogleMaps;
 
-var builder = WebApplication.CreateBuilder(args);
+var builder = WebAssemblyHostBuilder.CreateDefault(args);
 
-// Add services to the container.
-builder.Services.AddRazorComponents()
-    .AddInteractiveWebAssemblyComponents();
+builder.RootComponents.Add<App>("#app");
 
-var app = builder.Build();
+builder.Services.AddScoped(sp => new HttpClient { BaseAddress = new Uri(builder.HostEnvironment.BaseAddress) });
 
-// Configure the HTTP request pipeline.
-if (app.Environment.IsDevelopment())
+builder.Services.AddScoped<PlaceOfInterestApiClient>(sp =>
 {
-    app.UseWebAssemblyDebugging();
-}
-else
+    var httpClient = new HttpClient { BaseAddress = new Uri(builder.HostEnvironment.BaseAddress) };
+    return new PlaceOfInterestApiClient(httpClient);
+});
+
+builder.Services.AddScoped<GoogleMapsService>(sp =>
 {
-    app.UseExceptionHandler("/Error", createScopeForErrors: true);
-    // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
-    app.UseHsts();
-}
+    var httpClient = new HttpClient();
+    var apiKey = builder.Configuration["GoogleMaps:ApiKey"]
+                 ?? throw new InvalidOperationException("Google Maps API key not found");
+    return new GoogleMapsService(httpClient, apiKey);
+});
 
-app.UseHttpsRedirection();
-
-
-app.UseAntiforgery();
-
-app.MapStaticAssets();
-app.MapRazorComponents<App>()
-    .AddInteractiveWebAssemblyRenderMode()
-    .AddAdditionalAssemblies(typeof(PlaceOfInterest.Client.Client._Imports).Assembly);
-
-app.Run();
+await builder.Build().RunAsync();

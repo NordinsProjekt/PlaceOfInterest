@@ -1,0 +1,67 @@
+﻿@model PlaceOfInterest.Application.UseCases.CreatePlaceOfInterest.CreatePlaceOfInterestRequest
+@{
+    ViewData["Title"] = "Create Place Of Interest";
+}
+
+<h2 class="rz-title">Create Place Of Interest</h2>
+
+<div class="alert alert-info mb-4 text-center">
+    Please note: Your place must be verified by an admin before it will be visible to others.
+</div>
+
+<form asp-action="Create" method="post" class="rz-form" enctype="multipart/form-data">
+    <div class="rz-form-group mb-3">
+        <label asp-for="Name" class="rz-label"></label>
+        <input asp-for="Name" class="rz-input form-control" />
+        <span asp-validation-for="Name" class="rz-validation-message text-danger"></span>
+    </div>
+    <div class="rz-form-group mb-3">
+        <label asp-for="Description" class="rz-label"></label>
+        <textarea asp-for="Description" class="rz-input form-control"></textarea>
+        <span asp-validation-for="Description" class="rz-validation-message text-danger"></span>
+    </div>
+    <div class="rz-form-group mb-3">
+        <label asp-for="StartLocation" class="rz-label">Start Location</label>
+        <div class="input-group">
+            <input asp-for="StartLocation" class="rz-input form-control" id="startLocationInput" />
+            <button type="button" class="rz-button btn btn-outline-secondary" onclick="getLocation('startLocationInput')">Get GPS</button>
+        </div>
+        <span asp-validation-for="StartLocation" class="rz-validation-message text-danger"></span>
+    </div>
+    <div class="rz-form-group mb-3">
+        <label asp-for="EndLocation" class="rz-label">End Location</label>
+        <div class="input-group">
+            <input asp-for="EndLocation" class="rz-input form-control" id="endLocationInput" />
+            <button type="button" class="rz-button btn btn-outline-secondary" onclick="getLocation('endLocationInput')">Get GPS</button>
+        </div>
+        <span asp-validation-for="EndLocation" class="rz-validation-message text-danger"></span>
+    </div>
+    <div class="rz-form-group mb-3">
+        <label asp-for="TerrainScore" class="rz-label"></label>
+        <input asp-for="TerrainScore" class="rz-input form-control" type="number" min="1" max="5" />
+        <span asp-validation-for="TerrainScore" class="rz-validation-message text-danger"></span>
+    </div>
+    <div class="rz-form-group mb-3">
+        <label asp-for="ImageUrl" class="rz-label"></label>
+        <input asp-for="ImageUrl" class="rz-input form-control" />
+        <span asp-validation-for="ImageUrl" class="rz-validation-message text-danger"></span>
+    </div>
+    <button type="submit" class="rz-button btn btn-primary">Create</button>
+    <a asp-action="Index" class="rz-button btn btn-secondary">Cancel</a>
+</form>
+
+@section Scripts {
+    <script>
+        function getLocation(inputId) {
+            if (navigator.geolocation) {
+                navigator.geolocation.getCurrentPosition(function (position) {
+                    document.getElementById(inputId).value = position.coords.latitude + "," + position.coords.longitude;
+                }, function (error) {
+                    alert("Error getting location: " + error.message);
+                });
+            } else {
+                alert("Geolocation is not supported by this browser.");
+            }
+        }
+    </script>
+}
