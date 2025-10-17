@@ -19,10 +19,12 @@
     [Parameter] public Expression<Func<Guid>>? ValueExpression { get; set; }
     public bool Visible => StartLocations.Any();
     private List<DropDownNameIdDto> StartLocations { get; set; } = new();
+
     protected override void OnInitialized()
     {
         StartLocations = Repository.GetVerifiedNameIdStartLocation();
     }
+
     private async Task OnValueChanged(ChangeEventArgs e)
     {
         if (Guid.TryParse(e.Value?.ToString(), out var newValue))

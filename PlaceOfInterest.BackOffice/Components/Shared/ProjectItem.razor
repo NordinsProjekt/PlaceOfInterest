@@ -1,0 +1,17 @@
+﻿@if (Head is not null)
+{
+	<h1>@Head</h1>
+}
+
+@if (Body is not null)
+{
+	<p>
+		@Body
+	</p>
+}
+
+@code {
+	[Parameter] public RenderFragment? Head { get; set; }
+	[Parameter] public RenderFragment? Body { get; set; }
+
+}
