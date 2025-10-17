@@ -16,7 +16,33 @@ public class PlaceOfInterestApiClient
 
     public async Task<List<PlaceOfInterestApiDto>> GetAllAsync()
     {
-        return await _httpClient.GetFromJsonAsync<List<PlaceOfInterestApiDto>>("api/PlaceOfInterest") ?? new();
+        try
+        {
+            Console.WriteLine($"Making request to: {_httpClient.BaseAddress}api/PlaceOfInterest");
+            var response = await _httpClient.GetAsync("api/PlaceOfInterest");
+            
+            Console.WriteLine($"Response status: {response.StatusCode}");
+            Console.WriteLine($"Response headers: {string.Join(", ", response.Headers.Select(h => $"{h.Key}:{string.Join(",", h.Value)}"))}");
+            
+            if (response.IsSuccessStatusCode)
+            {
+                var result = await response.Content.ReadFromJsonAsync<List<PlaceOfInterestApiDto>>();
+                return result ?? new();
+            }
+            else
+            {
+                var content = await response.Content.ReadAsStringAsync();
+                Console.WriteLine($"Error response content: {content}");
+                return new();
+            }
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine($"Exception in GetAllAsync: {ex.Message}");
+            Console.WriteLine($"Exception type: {ex.GetType().Name}");
+            Console.WriteLine($"Stack trace: {ex.StackTrace}");
+            throw;
+        }
     }
 
     public async Task<PlaceOfInterestApiDto?> GetByIdAsync(Guid id)

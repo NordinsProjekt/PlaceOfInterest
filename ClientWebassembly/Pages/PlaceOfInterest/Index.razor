@@ -8,9 +8,16 @@
     <button class="rz-button btn btn-primary" @onclick="NavigateToCreate">Create New</button>
 </div>
 
-@if (places == null)
+@if (isLoading)
 {
     <div>Loading...</div>
+}
+else if (!string.IsNullOrEmpty(errorMessage))
+{
+    <div class="alert alert-danger mt-4">
+        @errorMessage
+        <button class="btn btn-sm btn-outline-danger mt-2" @onclick="LoadPlaces">Retry</button>
+    </div>
 }
 else if (!places.Any())
 {
@@ -56,17 +63,33 @@ else
 }
 
 @code {
-    private List<PlaceOfInterestApiDto> places = [];
+private List<PlaceOfInterestApiDto> places = [];
+private string? errorMessage;
+private bool isLoading = true;
 
-    protected override async Task OnInitializedAsync()
-    {
-        await LoadPlaces();
-    }
+protected override async Task OnInitializedAsync()
+{
+    await LoadPlaces();
+}
 
-    private async Task LoadPlaces()
+private async Task LoadPlaces()
+{
+    try
     {
+        isLoading = true;
+        errorMessage = null;
         places = await ApiClient.GetAllAsync();
     }
+    catch (Exception ex)
+    {
+        errorMessage = $"Error loading places: {ex.Message}";
+        Console.WriteLine($"Error in LoadPlaces: {ex}");
+    }
+    finally
+    {
+        isLoading = false;
+    }
+}
 
     private void NavigateToCreate()
     {
