@@ -1,6 +1,6 @@
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.UI.Services;
-using PlaceOfInterest.BackOffice.Data;
+using PlaceOfInterest.Domain;
 
 namespace PlaceOfInterest.BackOffice.Components.Account;
 // Remove the "else if (EmailSender is IdentityNoOpEmailSender)" block from RegisterConfirmation.razor after updating with a real implementation.

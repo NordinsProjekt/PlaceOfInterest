@@ -8,7 +8,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Primitives;
 using PlaceOfInterest.BackOffice.Components.Account.Pages;
 using PlaceOfInterest.BackOffice.Components.Account.Pages.Manage;
-using PlaceOfInterest.BackOffice.Data;
+using PlaceOfInterest.Domain;
 
 namespace PlaceOfInterest.BackOffice.Components.Account;
 internal static class IdentityComponentsEndpointRouteBuilderExtensions

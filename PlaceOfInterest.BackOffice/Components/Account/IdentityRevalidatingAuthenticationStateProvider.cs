@@ -2,7 +2,7 @@ using Microsoft.AspNetCore.Components.Authorization;
 using Microsoft.AspNetCore.Components.Server;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Options;
-using PlaceOfInterest.BackOffice.Data;
+using PlaceOfInterest.Domain;
 using System.Security.Claims;
 
 namespace PlaceOfInterest.BackOffice.Components.Account;

@@ -1,5 +1,5 @@
 using Microsoft.AspNetCore.Identity;
-using PlaceOfInterest.BackOffice.Data;
+using PlaceOfInterest.Domain;
 
 namespace PlaceOfInterest.BackOffice.Components.Account;
 internal sealed class IdentityUserAccessor(UserManager<ApplicationUser> userManager, IdentityRedirectManager redirectManager)
