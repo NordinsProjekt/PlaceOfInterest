@@ -16,11 +16,10 @@ builder.Services.AddCors(options =>
     {
         if (builder.Environment.IsDevelopment())
         {
-            // Development: Allow localhost origins for Blazor client
+            // Development: Allow localhost origins for Blazor client with fixed ports
             policy.WithOrigins(
-                    "https://localhost:7240", 
-                    "http://localhost:7240",
-                    "http://localhost:5176")
+                    "https://localhost:7240", // Blazor WASM HTTPS
+                    "http://localhost:5176") // Blazor WASM HTTP
                 .AllowAnyHeader()
                 .AllowAnyMethod()
                 .AllowCredentials();
@@ -33,7 +32,7 @@ builder.Services.AddCors(options =>
                 "https://clientwebassembly20251014073000-df6mneahram.northeurope-01.azurewebsites.net",
                 "https://placeofinterestclient-f7dfdcfrckgczxcdp.northeurope-01.azurewebsites.net"
             };
-            
+
             policy.WithOrigins(allowedOrigins)
                 .AllowAnyHeader()
                 .AllowAnyMethod()
@@ -41,8 +40,8 @@ builder.Services.AddCors(options =>
                 .SetIsOriginAllowed(origin =>
                 {
                     // Allow any Azure websites domain for this app
-                    return origin.Contains("azurewebsites.net") && 
-                           (origin.Contains("clientwebassembly") || 
+                    return origin.Contains("azurewebsites.net") &&
+                           (origin.Contains("clientwebassembly") ||
                             origin.Contains("placeofinterestclient"));
                 });
         }
@@ -70,45 +69,23 @@ builder.Services.AddRepositories();
 
 var app = builder.Build();
 
-// Automatically apply migrations on startup
-using (var scope = app.Services.CreateScope())
-{
-    var context = scope.ServiceProvider.GetRequiredService<PlaceOfInterestContext>();
-    try
-    {
-        await context.Database.MigrateAsync();
-        Console.WriteLine("Database migration completed successfully.");
-    }
-    catch (Exception ex)
-    {
-        Console.WriteLine($"Database migration failed: {ex.Message}");
-        // In production, you might want to log this error and potentially fail the startup
-        throw;
-    }
-}
-
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {
     app.MapOpenApi();
-}
+    // Add middleware to log CORS issues
+    app.Use(async (context, next) =>
+    {
+        var origin = context.Request.Headers["Origin"].FirstOrDefault();
+        if (!string.IsNullOrEmpty(origin)) Console.WriteLine($"Request from origin: {origin}");
 
-// Add middleware to log CORS issues
-app.Use(async (context, next) =>
-{
-    var origin = context.Request.Headers["Origin"].FirstOrDefault();
-    if (!string.IsNullOrEmpty(origin))
-    {
-        Console.WriteLine($"Request from origin: {origin}");
-    }
-    
-    await next();
-    
-    if (context.Response.StatusCode == 200)
-    {
-        Console.WriteLine($"Response headers: {string.Join(", ", context.Response.Headers.Select(h => $"{h.Key}:{h.Value}"))}");
-    }
-});
+        await next();
+
+        if (context.Response.StatusCode == 200)
+            Console.WriteLine(
+                $"Response headers: {string.Join(", ", context.Response.Headers.Select(h => $"{h.Key}:{h.Value}"))}");
+    });
+}
 
 app.UseCors("AllowBlazorClient");
 

@@ -1,47 +1,61 @@
 ﻿<div class="top-row ps-3 navbar navbar-dark">
     <div class="container-fluid">
-        <a class="navbar-brand" href="">ClientWebassembly</a>
+        <a class="navbar-brand" href="">Adventure</a>
         <button title="Navigation menu" class="navbar-toggler" @onclick="ToggleNavMenu">
             <span class="navbar-toggler-icon"></span>
         </button>
     </div>
 </div>
 
-<div class="@NavMenuCssClass nav-scrollable" @onclick="ToggleNavMenu">
-    <nav class="nav flex-column">
-        <div class="nav-item px-3">
-            <NavLink class="nav-link" href="" Match="NavLinkMatch.All">
-                <span class="bi bi-house-door-fill-nav-menu" aria-hidden="true"></span> Home
-            </NavLink>
-        </div>
-        
-        <div class="nav-item px-3">
-            <NavLink class="nav-link" href="/placeofinterest">
-                <span class="bi bi-list-nested" aria-hidden="true"></span> Places of Interest
-            </NavLink>
-        </div>
-        
-        <div class="nav-item px-3">
-            <NavLink class="nav-link" href="/placeofinterest/create">
-                <span class="bi bi-plus-square-fill" aria-hidden="true"></span> Create Place
-            </NavLink>
-        </div>
+<nav class="navbar-container">
+    <div class="navbar-content">
+        <a class="navbar-brand" href="">
+        <span class="brand-icon">🌲</span>
+         <span class="brand-text">Place of Interest</span>
+        </a>
+    
+        <button title="Navigation menu" class="navbar-toggler" @onclick="ToggleNavMenu">
+       <span class="toggler-line"></span>
+   <span class="toggler-line"></span>
+      <span class="toggler-line"></span>
+      </button>
 
-        <div class="nav-item px-3">
-            <NavLink class="nav-link" href="/contributions">
-                <span class="bi bi-award" aria-hidden="true"></span> Contributions
+        <div class="@NavMenuCssClass nav-menu">
+  <NavLink class="nav-link" href="" Match="NavLinkMatch.All" @onclick="CloseNavMenu">
+    <span class="nav-icon">🏠</span>
+       <span class="nav-text">Home</span>
+          </NavLink>
+      
+            <NavLink class="nav-link" href="/placeofinterest" @onclick="CloseNavMenu">
+   <span class="nav-icon">📍</span>
+    <span class="nav-text">Places</span>
+ </NavLink>
+     
+            <NavLink class="nav-link" href="/placeofinterest/create" @onclick="CloseNavMenu">
+         <span class="nav-icon">➕</span>
+                <span class="nav-text">Add Place</span>
+     </NavLink>
+
+        <NavLink class="nav-link" href="/contributions" @onclick="CloseNavMenu">
+       <span class="nav-icon">🏆</span>
+         <span class="nav-text">Contributions</span>
             </NavLink>
         </div>
-    </nav>
-</div>
+ </div>
+</nav>
 
 @code {
     private bool collapseNavMenu = true;
 
-    private string? NavMenuCssClass => collapseNavMenu ? "collapse" : null;
+    private string? NavMenuCssClass => collapseNavMenu ? "collapse" : "expanded";
 
     private void ToggleNavMenu()
     {
         collapseNavMenu = !collapseNavMenu;
+    }
+    
+    private void CloseNavMenu()
+    {
+        collapseNavMenu = true;
     }
 }

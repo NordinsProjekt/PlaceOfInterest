@@ -1,7 +1,165 @@
 ﻿@page "/"
 
-<PageTitle>Home</PageTitle>
+<PageTitle>Place of Interest - Discover Your Next Adventure</PageTitle>
 
-<h1>Hello, world!</h1>
+<div class="hero-section fade-in">
+    <div class="hero-content">
+        <h1 class="hero-title">
+     <span class="hero-icon">🗺️</span>
+    Discover Your Next Adventure
+        </h1>
+  <p class="hero-subtitle">
+     Explore, share, and save your favorite places around the world
+   </p>
+   <div class="hero-actions">
+   <a href="/placeofinterest" class="btn btn-primary btn-lg">
+        <span>🌍</span> Explore Places
+         </a>
+   <a href="/placeofinterest/create" class="btn btn-secondary btn-lg">
+       <span>📍</span> Add New Place
+  </a>
+        </div>
+ </div>
+</div>
 
-Welcome to your new app.
+<div class="features-section">
+  <div class="features-grid">
+        <div class="feature-card card">
+<div class="feature-icon">🏞️</div>
+  <h3>Discover Places</h3>
+        <p>Find amazing locations shared by fellow travelers and adventurers</p>
+      </div>
+     
+  <div class="feature-card card">
+      <div class="feature-icon">📝</div>
+     <h3>Share Experiences</h3>
+    <p>Document your favorite spots and help others discover hidden gems</p>
+        </div>
+  
+  <div class="feature-card card">
+    <div class="feature-icon">⭐</div>
+          <h3>Track Contributions</h3>
+  <p>Keep track of all the places you've added and shared with the community</p>
+    </div>
+    </div>
+</div>
+
+<style>
+    .hero-section {
+        text-align: center;
+  padding: 4rem 2rem;
+   background: linear-gradient(135deg, var(--forest-green-pale) 0%, rgba(168, 213, 186, 0.3) 100%);
+     border-radius: 24px;
+   margin-bottom: 3rem;
+        box-shadow: 0 8px 24px rgba(26, 77, 46, 0.1);
+    }
+
+    .hero-content {
+max-width: 800px;
+    margin: 0 auto;
+    }
+
+    .hero-title {
+   font-size: 3rem;
+     margin-bottom: 1rem;
+        color: var(--forest-green-dark);
+   border: none;
+     display: block;
+  }
+
+    .hero-icon {
+        font-size: 3.5rem;
+        display: block;
+        margin-bottom: 1rem;
+        animation: float 3s ease-in-out infinite;
+    }
+
+    @@keyframes float {
+ 0%, 100% { transform: translateY(0); }
+        50% { transform: translateY(-10px); }
+    }
+
+    .hero-subtitle {
+        font-size: 1.5rem;
+        color: var(--forest-green);
+ margin-bottom: 2rem;
+        font-weight: 500;
+    }
+
+    .hero-actions {
+        display: flex;
+      gap: 1rem;
+        justify-content: center;
+    flex-wrap: wrap;
+  }
+
+    .btn-lg {
+padding: 1rem 2.5rem;
+    font-size: 1.1rem;
+        display: inline-flex;
+        align-items: center;
+  gap: 0.5rem;
+    }
+
+    .btn-lg span {
+        font-size: 1.5rem;
+    }
+
+    .features-section {
+        padding: 2rem 0;
+    }
+
+ .features-grid {
+ display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 2rem;
+        margin-top: 2rem;
+    }
+
+    .feature-card {
+        text-align: center;
+    padding: 2.5rem 2rem;
+    transition: all 0.3s ease;
+    }
+
+    .feature-card:hover {
+        transform: translateY(-8px);
+        box-shadow: 0 12px 32px rgba(26, 77, 46, 0.2);
+    }
+
+    .feature-icon {
+    font-size: 4rem;
+    margin-bottom: 1rem;
+ filter: drop-shadow(0 4px 8px rgba(26, 77, 46, 0.2));
+    }
+
+ .feature-card h3 {
+    color: var(--forest-green-dark);
+        margin-bottom: 1rem;
+        font-size: 1.5rem;
+  }
+
+    .feature-card p {
+        color: var(--forest-green);
+ line-height: 1.6;
+        font-size: 1rem;
+  }
+
+    @@media (max-width: 768px) {
+        .hero-title {
+            font-size: 2rem;
+  }
+
+        .hero-subtitle {
+   font-size: 1.2rem;
+   }
+
+        .hero-section {
+            padding: 3rem 1rem;
+        }
+
+      .features-grid {
+     grid-template-columns: 1fr;
+    }
+    }
+</style>
