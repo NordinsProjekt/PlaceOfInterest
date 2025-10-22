@@ -1,0 +1,76 @@
+/* Forest Green Color Palette */
+:root {
+    --forest-green-dark: #1a4d2e;
+    --forest-green: #2d5a3d;
+    --forest-green-medium: #4f7942;
+    --forest-green-light: #6b9b5f;
+    --forest-green-lighter: #a8d5ba;
+  --forest-green-pale: #e8f5e9;
+    --earth-brown: #8b7355;
+ --sky-blue: #87ceeb;
+    --sunset-orange: #ff8c42;
+    --white: #ffffff;
+    --off-white: #f8f9fa;
+    --text-dark: #2c3e50;
+}
+
+.page {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+    background: linear-gradient(135deg, var(--off-white) 0%, var(--forest-green-pale) 100%);
+}
+
+main {
+    flex: 1;
+    padding-top: 80px; /* Space for fixed header */
+}
+
+.app-header {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 1000;
+    background: linear-gradient(135deg, var(--forest-green-dark) 0%, var(--forest-green) 100%);
+    box-shadow: 0 4px 12px rgba(26, 77, 46, 0.3);
+}
+
+.content {
+    padding: 2rem 1rem;
+    max-width: 1400px;
+    margin: 0 auto;
+    width: 100%;
+}
+
+.app-footer {
+    background: linear-gradient(135deg, var(--forest-green-dark) 0%, var(--forest-green) 100%);
+    color: var(--white);
+    padding: 1.5rem 0;
+    margin-top: 3rem;
+    box-shadow: 0 -4px 12px rgba(26, 77, 46, 0.2);
+}
+
+.footer-content {
+    max-width: 1400px;
+    margin: 0 auto;
+    text-align: center;
+    padding: 0 1rem;
+}
+
+.footer-content p {
+    margin: 0;
+    font-size: 0.9rem;
+    opacity: 0.9;
+}
+
+@media (max-width: 768px) {
+    main {
+        padding-top: 60px;
+    }
+    
+    .content {
+        padding: 1rem 0.5rem;
+    }
+}

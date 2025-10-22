@@ -1,0 +1,36 @@
+@PlaceOfInterest.ClientAPI_HostAddress = https://localhost:7049
+
+# Test GET all places of interest
+GET {{PlaceOfInterest.ClientAPI_HostAddress}}/api/PlaceOfInterest
+Accept: application/json
+
+###
+
+# Test GET specific place of interest (replace with actual GUID)
+GET {{PlaceOfInterest.ClientAPI_HostAddress}}/api/PlaceOfInterest/00000000-0000-0000-0000-000000000000
+Accept: application/json
+
+###
+
+# Test POST new place of interest
+POST {{PlaceOfInterest.ClientAPI_HostAddress}}/api/PlaceOfInterest
+Content-Type: application/json
+
+{
+  "name": "Test Place",
+  "description": "Test Description",
+  "startLocation": {
+    "name": "Start Location",
+    "latitude": 59.3293,
+    "longitude": 18.0686
+  },
+  "endLocation": {
+    "name": "End Location", 
+    "latitude": 59.3293,
+    "longitude": 18.0686
+  },
+  "terrainScore": 3,
+  "imageUrl": "https://example.com/image.jpg"
+}
+
+###

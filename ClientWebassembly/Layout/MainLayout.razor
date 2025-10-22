@@ -1,0 +1,19 @@
+﻿@inherits LayoutComponentBase
+
+<div class="page">
+    <header class="app-header">
+        <NavMenu />
+    </header>
+
+    <main>
+        <article class="content px-4">
+    @Body
+        </article>
+    </main>
+    
+    <footer class="app-footer">
+        <div class="footer-content">
+ <p>&copy; @DateTime.Now.Year Place of Interest - Discover Your Next Adventure</p>
+     </div>
+    </footer>
+</div>

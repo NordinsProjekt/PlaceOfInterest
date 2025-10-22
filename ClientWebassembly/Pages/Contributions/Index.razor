@@ -1,0 +1,79 @@
+@page "/contributions"
+@using System.Text.Json
+@inject IJSRuntime JS
+
+<h3>My Contributions</h3>
+
+@if (contributions is null)
+{
+    <p>Loading...</p>
+}
+else if (contributions.Count == 0)
+{
+    <div class="alert alert-info">No contributions found.</div>
+}
+else
+{
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th>Token</th>
+                <th>Title</th>
+            </tr>
+        </thead>
+        <tbody>
+        @foreach (var c in contributions)
+        {
+            <tr>
+                <td><code>@c.Token</code></td>
+                <td>@(string.IsNullOrWhiteSpace(c.Name) ? "—" : c.Name)</td>
+            </tr>
+        }
+        </tbody>
+    </table>
+}
+
+@code {
+    private const string ContributionsKey = "poi:contributions";
+
+    private List<ContributionEntry>? contributions;
+
+    protected override async Task OnInitializedAsync()
+    {
+        contributions = await LoadContributionsAsync();
+    }
+
+    private async Task<List<ContributionEntry>> LoadContributionsAsync()
+    {
+        var json = await JS.InvokeAsync<string?>("storage.get", ContributionsKey);
+        var items = new List<ContributionEntry>();
+        var options = new JsonSerializerOptions { PropertyNameCaseInsensitive = true };
+
+        if (!string.IsNullOrWhiteSpace(json))
+        {
+            try
+            {
+                var parsed = JsonSerializer.Deserialize<List<ContributionEntry>>(json!, options);
+                if (parsed is not null) items = parsed;
+            }
+            catch
+            {
+                // Backward compatibility: string tokens
+                try
+                {
+                    var tokens = JsonSerializer.Deserialize<List<string>>(json!) ?? new();
+                    items = tokens.Select(t => new ContributionEntry { Token = t }).ToList();
+                }
+                catch { }
+            }
+        }
+
+        return items;
+    }
+
+    private class ContributionEntry
+    {
+        public string Token { get; set; } = string.Empty;
+        public string? Name { get; set; }
+    }
+}

@@ -1,0 +1,400 @@
+/* Forest Green Color Palette */
+:root {
+    --forest-green-dark: #1a4d2e;
+    --forest-green: #2d5a3d;
+    --forest-green-medium: #4f7942;
+  --forest-green-light: #6b9b5f;
+    --forest-green-lighter: #a8d5ba;
+    --forest-green-pale: #e8f5e9;
+    --earth-brown: #8b7355;
+    --sky-blue: #87ceeb;
+    --sunset-orange: #ff8c42;
+    --white: #ffffff;
+    --off-white: #f8f9fa;
+    --text-dark: #2c3e50;
+ --success-green: #4caf50;
+    --danger-red: #e74c3c;
+}
+
+html, body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    margin: 0;
+    padding: 0;
+    color: var(--text-dark);
+    background: var(--off-white);
+}
+
+h1, h2, h3, h4, h5, h6 {
+    color: var(--forest-green-dark);
+    font-weight: 600;
+    margin-bottom: 1rem;
+}
+
+h1 {
+    font-size: 2.5rem;
+    border-bottom: 3px solid var(--forest-green-light);
+    padding-bottom: 0.5rem;
+    display: inline-block;
+}
+
+h1:focus {
+    outline: none;
+}
+
+h2 {
+    font-size: 2rem;
+    color: var(--forest-green);
+}
+
+h3 {
+    font-size: 1.5rem;
+}
+
+/* Links and Buttons */
+a {
+    color: var(--forest-green);
+    text-decoration: none;
+    transition: color 0.3s ease;
+}
+
+a:hover {
+    color: var(--forest-green-light);
+    text-decoration: underline;
+}
+
+.btn-link {
+    color: var(--forest-green);
+}
+
+.btn-primary {
+    color: var(--white);
+    background: linear-gradient(135deg, var(--forest-green) 0%, var(--forest-green-medium) 100%);
+    border: none;
+    padding: 0.75rem 2rem;
+    font-size: 1rem;
+    font-weight: 600;
+    border-radius: 12px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 8px rgba(45, 90, 61, 0.3);
+}
+
+.btn-primary:hover {
+    background: linear-gradient(135deg, var(--forest-green-medium) 0%, var(--forest-green-light) 100%);
+    transform: translateY(-2px);
+ box-shadow: 0 6px 12px rgba(45, 90, 61, 0.4);
+}
+
+.btn-primary:active {
+    transform: translateY(0);
+}
+
+.btn-secondary {
+    color: var(--forest-green-dark);
+    background: var(--forest-green-lighter);
+    border: 2px solid var(--forest-green-light);
+    padding: 0.75rem 2rem;
+    font-size: 1rem;
+    font-weight: 600;
+  border-radius: 12px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.btn-secondary:hover {
+    background: var(--forest-green-light);
+    color: var(--white);
+}
+
+.btn:focus, .btn:active:focus, .btn-link.nav-link:focus {
+    box-shadow: 0 0 0 0.2rem rgba(107, 155, 95, 0.5);
+    outline: none;
+}
+
+/* Form Controls */
+.form-control {
+    border: 2px solid var(--forest-green-lighter);
+    border-radius: 8px;
+    padding: 0.75rem 1rem;
+    font-size: 1rem;
+ transition: all 0.3s ease;
+}
+
+.form-control:focus {
+    border-color: var(--forest-green-light);
+    box-shadow: 0 0 0 0.2rem rgba(107, 155, 95, 0.25);
+    outline: none;
+}
+
+.form-check-input:focus {
+    border-color: var(--forest-green-light);
+    box-shadow: 0 0 0 0.2rem rgba(107, 155, 95, 0.25);
+}
+
+.form-label {
+    color: var(--forest-green-dark);
+    font-weight: 600;
+    margin-bottom: 0.5rem;
+}
+
+/* Content Area */
+.content {
+    padding-top: 1.5rem;
+}
+
+/* Cards */
+.card {
+    background: var(--white);
+    border-radius: 16px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    padding: 2rem;
+    margin-bottom: 1.5rem;
+    border: 1px solid var(--forest-green-pale);
+    transition: all 0.3s ease;
+}
+
+.card:hover {
+    box-shadow: 0 8px 24px rgba(26, 77, 46, 0.15);
+    transform: translateY(-4px);
+}
+
+/* Validation */
+.valid.modified:not([type=checkbox]) {
+  border-color: var(--success-green);
+    outline: 2px solid var(--success-green);
+}
+
+.invalid {
+    border-color: var(--danger-red);
+    outline: 2px solid var(--danger-red);
+}
+
+.validation-message {
+    color: var(--danger-red);
+    font-size: 0.875rem;
+    margin-top: 0.25rem;
+    font-weight: 500;
+}
+
+/* Error UI */
+#blazor-error-ui {
+    color-scheme: light only;
+    background: linear-gradient(135deg, var(--sunset-orange) 0%, #e74c3c 100%);
+    bottom: 0;
+    box-shadow: 0 -4px 12px rgba(0, 0, 0, 0.3);
+    box-sizing: border-box;
+    display: none;
+    left: 0;
+    padding: 1rem 1.25rem;
+    position: fixed;
+    width: 100%;
+    z-index: 1000;
+    color: var(--white);
+    font-weight: 600;
+}
+
+#blazor-error-ui .dismiss {
+    cursor: pointer;
+    position: absolute;
+    right: 1rem;
+    top: 50%;
+    transform: translateY(-50%);
+    font-size: 1.5rem;
+    color: var(--white);
+    opacity: 0.8;
+    transition: opacity 0.3s ease;
+}
+
+#blazor-error-ui .dismiss:hover {
+    opacity: 1;
+}
+
+.blazor-error-boundary {
+    background: linear-gradient(135deg, var(--danger-red) 0%, #c0392b 100%);
+  padding: 1.5rem 1rem 1.5rem 4rem;
+    color: var(--white);
+    border-radius: 12px;
+    margin: 1rem 0;
+    position: relative;
+  box-shadow: 0 4px 12px rgba(231, 76, 60, 0.3);
+}
+
+.blazor-error-boundary::before {
+    content: '??';
+    position: absolute;
+    left: 1rem;
+    top: 50%;
+    transform: translateY(-50%);
+    font-size: 2rem;
+}
+
+.blazor-error-boundary::after {
+    content: "An error has occurred. Please refresh the page.";
+    font-weight: 600;
+}
+
+/* Loading Progress */
+.loading-progress {
+    position: relative;
+    display: block;
+    width: 8rem;
+    height: 8rem;
+    margin: 20vh auto 1rem auto;
+}
+
+.loading-progress circle {
+    fill: none;
+    stroke: var(--forest-green-pale);
+    stroke-width: 0.6rem;
+    transform-origin: 50% 50%;
+    transform: rotate(-90deg);
+}
+
+.loading-progress circle:last-child {
+    stroke: var(--forest-green);
+    stroke-dasharray: calc(3.141 * var(--blazor-load-percentage, 0%) * 0.8), 500%;
+    transition: stroke-dasharray 0.05s ease-in-out;
+}
+
+.loading-progress-text {
+    position: absolute;
+    text-align: center;
+    font-weight: bold;
+    inset: calc(20vh + 3.25rem) 0 auto 0.2rem;
+    color: var(--forest-green-dark);
+}
+
+.loading-progress-text:after {
+    content: var(--blazor-load-percentage-text, "Loading");
+}
+
+code {
+    color: var(--forest-green-dark);
+    background: var(--forest-green-pale);
+    padding: 0.25rem 0.5rem;
+    border-radius: 4px;
+    font-family: 'Courier New', monospace;
+}
+
+.form-floating > .form-control-plaintext::placeholder,
+.form-floating > .form-control::placeholder {
+    color: var(--forest-green-lighter);
+    text-align: end;
+}
+
+.form-floating > .form-control-plaintext:focus::placeholder,
+.form-floating > .form-control:focus::placeholder {
+    text-align: start;
+}
+
+/* Tables */
+.table {
+    background: var(--white);
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.table thead {
+    background: linear-gradient(135deg, var(--forest-green-dark) 0%, var(--forest-green) 100%);
+    color: var(--white);
+}
+
+.table th {
+    padding: 1rem;
+    font-weight: 600;
+}
+
+.table td {
+    padding: 0.75rem 1rem;
+    border-bottom: 1px solid var(--forest-green-pale);
+}
+
+.table tbody tr:hover {
+    background: var(--forest-green-pale);
+    transition: background 0.3s ease;
+}
+
+/* Badges */
+.badge {
+    padding: 0.5rem 1rem;
+    border-radius: 20px;
+    font-weight: 600;
+ font-size: 0.875rem;
+}
+
+.badge-primary {
+    background: var(--forest-green-light);
+    color: var(--white);
+}
+
+.badge-success {
+    background: var(--success-green);
+    color: var(--white);
+}
+
+/* Alerts */
+.alert {
+    padding: 1rem 1.5rem;
+    border-radius: 12px;
+    margin-bottom: 1rem;
+    border-left: 4px solid;
+}
+
+.alert-success {
+    background: var(--forest-green-pale);
+    border-color: var(--success-green);
+    color: var(--forest-green-dark);
+}
+
+.alert-info {
+    background: #e3f2fd;
+    border-color: var(--sky-blue);
+    color: #0277bd;
+}
+
+.alert-warning {
+    background: #fff3e0;
+    border-color: var(--sunset-orange);
+    color: #e65100;
+}
+
+.alert-danger {
+    background: #ffebee;
+    border-color: var(--danger-red);
+    color: #c62828;
+}
+
+/* Animations */
+@keyframes fadeIn {
+from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+   transform: translateY(0);
+    }
+}
+
+.fade-in {
+    animation: fadeIn 0.6s ease-out;
+}
+
+/* Scrollbar */
+::-webkit-scrollbar {
+    width: 12px;
+}
+
+::-webkit-scrollbar-track {
+    background: var(--forest-green-pale);
+}
+
+::-webkit-scrollbar-thumb {
+    background: var(--forest-green-light);
+    border-radius: 6px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: var(--forest-green);
+}

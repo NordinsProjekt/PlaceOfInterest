@@ -1,0 +1,37 @@
+﻿@using System.Linq.Expressions
+@using global::PlaceOfInterest.Application.Interfaces
+@using global::PlaceOfInterest.Application.Models
+@inject IStartLocationRepository Repository
+
+@if (Visible)
+{
+    <select value="@Value" class="form-control" @onchange="OnValueChanged">
+        <option value="">-- Select a Start Location --</option>
+        @foreach (var location in StartLocations)
+        {
+            <option value="@location.Id">@location.Name</option>
+        }
+    </select>
+}
+@code {
+    [Parameter] public Guid Value { get; set; }
+    [Parameter] public EventCallback<Guid> ValueChanged { get; set; }
+    [Parameter] public Expression<Func<Guid>>? ValueExpression { get; set; }
+    public bool Visible => StartLocations.Any();
+    private List<DropDownNameIdDto> StartLocations { get; set; } = new();
+
+    protected override void OnInitialized()
+    {
+        StartLocations = Repository.GetVerifiedNameIdStartLocation();
+    }
+
+    private async Task OnValueChanged(ChangeEventArgs e)
+    {
+        if (Guid.TryParse(e.Value?.ToString(), out var newValue))
+        {
+            Value = newValue;
+            await ValueChanged.InvokeAsync(Value);
+        }
+    }
+}
+
